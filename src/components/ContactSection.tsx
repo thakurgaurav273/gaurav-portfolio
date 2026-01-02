@@ -50,15 +50,53 @@ const ContactSection = () => {
       return;
     }
 
-    const checkRecaptcha = () => {
-      if (window.grecaptcha && window.grecaptcha.ready) {
-        setRecaptchaLoaded(true);
-      } else {
-        setTimeout(checkRecaptcha, 100);
+    // Check if script is already loaded
+    if (window.grecaptcha) {
+      setRecaptchaLoaded(true);
+      return;
+    }
+
+    // Check if script tag already exists
+    const existingScript = document.querySelector(`script[src*="recaptcha/api.js"]`);
+    if (existingScript) {
+      const checkRecaptcha = () => {
+        if (window.grecaptcha && window.grecaptcha.ready) {
+          setRecaptchaLoaded(true);
+        } else {
+          setTimeout(checkRecaptcha, 100);
+        }
+      };
+      checkRecaptcha();
+      return;
+    }
+
+    // Load reCAPTCHA script dynamically with site key
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      const checkRecaptcha = () => {
+        if (window.grecaptcha && window.grecaptcha.ready) {
+          setRecaptchaLoaded(true);
+        } else {
+          setTimeout(checkRecaptcha, 100);
+        }
+      };
+      checkRecaptcha();
+    };
+    script.onerror = () => {
+      console.error('Failed to load reCAPTCHA script');
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup: remove script if component unmounts
+      const scriptToRemove = document.querySelector(`script[src*="recaptcha/api.js?render=${siteKey}"]`);
+      if (scriptToRemove) {
+        scriptToRemove.remove();
       }
     };
-
-    checkRecaptcha();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
