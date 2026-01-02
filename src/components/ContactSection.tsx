@@ -130,23 +130,35 @@ const ContactSection = () => {
       if (siteKey && window.grecaptcha) {
         try {
           await new Promise<void>((resolve) => {
-            window.grecaptcha.ready(() => {
-              resolve();
-            });
+            if (window.grecaptcha.ready) {
+              window.grecaptcha.ready(() => {
+                resolve();
+              });
+            } else {
+              // If ready is not available, wait a bit and try again
+              setTimeout(() => {
+                if (window.grecaptcha && window.grecaptcha.ready) {
+                  window.grecaptcha.ready(() => resolve());
+                } else {
+                  resolve(); // Continue anyway
+                }
+              }, 500);
+            }
           });
 
           recaptchaToken = await window.grecaptcha.execute(siteKey, {
             action: 'submit',
           });
-        } catch (recaptchaError) {
-          console.error('reCAPTCHA error:', recaptchaError);
-          toast({
-            title: 'reCAPTCHA Error',
-            description: 'Please verify you are not a robot and try again.',
-            variant: 'destructive',
-          });
-          setIsSubmitting(false);
-          return;
+        } catch (recaptchaError: any) {
+          console.warn('reCAPTCHA error (continuing without token):', recaptchaError);
+          // Don't block form submission - let backend handle it
+          // The backend can choose to accept or reject requests without reCAPTCHA
+          recaptchaToken = '';
+          
+          // Only show warning if it's a critical error
+          if (recaptchaError?.message?.includes('Invalid site key')) {
+            console.warn('reCAPTCHA site key may be invalid or domain not registered. Form will submit without reCAPTCHA verification.');
+          }
         }
       }
 

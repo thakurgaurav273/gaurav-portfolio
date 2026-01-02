@@ -72,13 +72,18 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // Verify reCAPTCHA
-    const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
-    if (!isRecaptchaValid) {
-      return res.status(400).json({
-        success: false,
-        error: 'reCAPTCHA verification failed. Please try again.',
-      });
+    // Verify reCAPTCHA (optional if secret key not configured)
+    const secretKey = process.env.SITE_SECRET_KEY;
+    if (secretKey) {
+      const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+      if (!isRecaptchaValid) {
+        return res.status(400).json({
+          success: false,
+          error: 'reCAPTCHA verification failed. Please try again.',
+        });
+      }
+    } else {
+      console.warn('reCAPTCHA verification skipped - SITE_SECRET_KEY not configured');
     }
 
     // Send email to owner
