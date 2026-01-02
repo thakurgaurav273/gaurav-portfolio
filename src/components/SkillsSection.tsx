@@ -111,10 +111,8 @@ const SkillsSection = () => {
         {/* Skills Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {skillCategories.map((category, categoryIndex) => {
-            // Determine progress bar gradient - use purple/pink for most, green for Backend
-            const progressGradient = category.title === 'Backend' 
-              ? 'from-green-500 to-emerald-500' 
-              : 'from-purple-500 to-pink-500';
+            // Use the same gradient as the circle for the progress bars
+            const progressGradient = category.color;
             
             return (
               <motion.div

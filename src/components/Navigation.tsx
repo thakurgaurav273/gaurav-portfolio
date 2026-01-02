@@ -42,11 +42,15 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
           {/* Logo */}
           <motion.a
             href="#home"
-            className="text-2xl font-display font-bold gradient-text"
+            className="flex items-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            GS
+            <img 
+              src="/logo.png" 
+              alt="Gaurav Singh Logo" 
+              className="h-10 w-auto"
+            />
           </motion.a>
 
           {/* Desktop Navigation */}

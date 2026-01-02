@@ -37,7 +37,7 @@ const projects = [
       'Real-time collaboration tools',
       'Secure data handling and authentication',
     ],
-    tech: ['React.js', 'Node.js', 'MongoDB', 'Tailwind CSS', 'Shadcn UI', 'TypeScript', 'Three.js', 'Framer Motion'],
+    tech: ['React.js', 'Node.js', 'Tailwind CSS', 'Shadcn UI','Three.js', 'Framer Motion'],
     image: beplImage,
     featured: true,
     link: 'https://bepl.netlify.app',

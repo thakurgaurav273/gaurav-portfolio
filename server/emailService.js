@@ -88,7 +88,7 @@ const getOwnerEmailTemplate = ({ name, email, message }) => `
           <tr>
             <td style="padding: 30px; background: #141428; text-align: center; border-top: 1px solid rgba(132, 87, 234, 0.1);">
               <p style="margin: 0; color: #6b7280; font-size: 13px;">
-                This email was sent from your Lumina Studio portfolio contact form
+                This email was sent from your Gaurav Singh portfolio contact form
               </p>
             </td>
           </tr>
@@ -152,7 +152,7 @@ const getConfirmationEmailTemplate = ({ name }) => `
           <tr>
             <td style="padding: 30px; background: #141428; text-align: center; border-top: 1px solid rgba(132, 87, 234, 0.1);">
               <p style="margin: 0 0 10px 0; color: #ffffff; font-size: 15px; font-weight: 600;">
-                Lumina Studio
+                Gaurav Singh
               </p>
               <p style="margin: 0; color: #6b7280; font-size: 13px;">
                 Building amazing experiences, one project at a time
@@ -189,7 +189,7 @@ export async function sendContactEmail({ name, email, message }) {
   }
 
   const mailOptions = {
-    from: `"Lumina Studio Portfolio" <${fromEmail}>`,
+    from: `"Gaurav Singh Portfolio" <${fromEmail}>`,
     to: ownerEmail,
     subject: `New Contact Form: ${name} (${email})`,
     html: getOwnerEmailTemplate({ name, email, message }),
@@ -204,11 +204,11 @@ export async function sendConfirmationEmail({ name, email }) {
   const fromEmail = process.env.MY_EMAIL || process.env.SMTP_USER;
   
   const mailOptions = {
-    from: `"Lumina Studio" <${fromEmail}>`,
+    from: `"Gaurav Singh" <${fromEmail}>`,
     to: email,
-    subject: 'Message Received - Lumina Studio',
+    subject: 'Message Received - Gaurav Singh',
     html: getConfirmationEmailTemplate({ name }),
-    text: `Hi ${name},\n\nThank you for reaching out! I've received your message and will get back to you within 24 hours.\n\nBest regards,\nLumina Studio`,
+    text: `Hi ${name},\n\nThank you for reaching out! I've received your message and will get back to you within 24 hours.\n\nBest regards,\nGaurav Singh`,
   };
 
   return transporter.sendMail(mailOptions);

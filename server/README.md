@@ -1,4 +1,4 @@
-# Lumina Studio Backend
+# Gaurav Singh Backend
 
 Backend server for handling email notifications from the contact form.
 
