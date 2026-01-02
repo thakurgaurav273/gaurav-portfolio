@@ -240,7 +240,7 @@ const ContactSection = () => {
 
               <div className="space-y-4">
                 <motion.a
-                  href="mailto:gaurav@example.com"
+                  href="mailto:thakurgaurav273@gmail.com"
                   whileHover={{ x: 5 }}
                   className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors"
                 >
@@ -249,7 +249,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">gaurav@example.com</p>
+                    <p className="font-medium">thakurgaurav273@gmail.com</p>
                   </div>
                 </motion.a>
               </div>
