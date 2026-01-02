@@ -39,7 +39,7 @@ const Index = () => {
         <ProjectsSection />
         <ContactSection />
       </main>
-      <Footer />
+      <Footer isDark={isDark} />
     </div>
   );
 };

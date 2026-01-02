@@ -47,7 +47,7 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
             whileTap={{ scale: 0.95 }}
           >
             <img 
-              src="/logo.png" 
+              src={isDark ? "/logo.png" : "/logo_dark.png"} 
               alt="Gaurav Singh Logo" 
               className="h-10 w-auto"
             />

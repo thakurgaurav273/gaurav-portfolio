@@ -7,7 +7,11 @@ const socialLinks = [
   { icon: Mail, href: 'mailto:thakurgaurav273@gmail.com', label: 'Email' },
 ];
 
-const Footer = () => {
+interface FooterProps {
+  isDark: boolean;
+}
+
+const Footer = ({ isDark }: FooterProps) => {
   return (
     <footer className="py-8 border-t border-border">
       <div className="container-custom">
@@ -20,7 +24,7 @@ const Footer = () => {
             whileTap={{ scale: 0.95 }}
           >
             <img 
-              src="/logo.png" 
+              src={isDark ? "/logo.png" : "/logo_dark.png"} 
               alt="Gaurav Singh Logo" 
               className="h-10 w-auto"
             />

@@ -84,14 +84,6 @@ const HeroSection = () => {
                   Get in Touch
                 </a>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="gradient-border bg-background"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Download CV
-              </Button>
             </motion.div>
             
             {/* Social Links */}
