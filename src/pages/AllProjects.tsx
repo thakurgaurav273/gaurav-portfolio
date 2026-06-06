@@ -97,7 +97,7 @@ export default function AllProjects() {
     document.documentElement.classList.toggle('dark', shouldBeDark);
   }, []);
 
-  const { data: projects, isLoading } = useQuery({
+  const { data: projects, isLoading, isError, error } = useQuery({
     queryKey: ['public-projects'],
     queryFn: async () => (await api.get('/content/projects')).data,
     retry: false
@@ -105,6 +105,10 @@ export default function AllProjects() {
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading projects...</div>;
+  }
+
+  if (isError) {
+    return <div className="min-h-screen flex items-center justify-center text-red-500">Error: {error?.message || 'Failed to load projects'}</div>;
   }
 
   return (
@@ -134,7 +138,7 @@ export default function AllProjects() {
         </motion.div>
 
         <div className="space-y-32 mt-20 w-full">
-          {projects?.map((project: any, index: number) => (
+          {Array.isArray(projects) && projects.map((project: any, index: number) => (
             <motion.div
               key={project._id || index}
               initial={{ opacity: 0, y: 50 }}
