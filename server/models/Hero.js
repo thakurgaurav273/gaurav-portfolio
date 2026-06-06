@@ -8,6 +8,10 @@ const heroSchema = new mongoose.Schema({
   socialLinks: [{
     platform: String,
     url: String,
+  }],
+  stats: [{
+    value: String,
+    label: String
   }]
 });
 

@@ -18,7 +18,7 @@ router.get('/hero', async (req, res) => {
 
 router.put('/hero', requireAuth, async (req, res) => {
   try {
-    const { name, subtitle, description, resumeUrl, socialLinks } = req.body;
+    const { name, subtitle, description, resumeUrl, socialLinks, stats } = req.body;
     let hero = await Hero.findOne();
     
     if (hero) {
@@ -27,9 +27,10 @@ router.put('/hero', requireAuth, async (req, res) => {
       hero.description = description;
       hero.resumeUrl = resumeUrl;
       hero.socialLinks = socialLinks;
+      hero.stats = stats;
       await hero.save();
     } else {
-      hero = new Hero({ name, subtitle, description, resumeUrl, socialLinks });
+      hero = new Hero({ name, subtitle, description, resumeUrl, socialLinks, stats });
       await hero.save();
     }
     res.json(hero);

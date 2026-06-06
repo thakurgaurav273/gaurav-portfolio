@@ -6,6 +6,10 @@ const projectSchema = new mongoose.Schema({
   features: [{ type: String }],
   tech: [{ type: String }],
   image: { type: String },
+  media: [{ 
+    url: { type: String, required: true },
+    type: { type: String, enum: ['image', 'video'], default: 'image' }
+  }],
   featured: { type: Boolean, default: false },
   link: { type: String },
   githubUrl: { type: String },

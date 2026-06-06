@@ -6,7 +6,7 @@ dotenv.config();
 const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder');
 const fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
-// Email templates
+
 const getOwnerEmailTemplate = ({ name, email, message }) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -150,7 +150,7 @@ const getConfirmationEmailTemplate = ({ name }) => `
 </html>
 `;
 
-// Helper function to escape HTML
+
 function escapeHtml(text) {
   const map = {
     '&': '&amp;',
@@ -162,7 +162,7 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
 
-// Send email to owner
+
 export async function sendContactEmail({ name, email, message }) {
   const ownerEmail = process.env.MY_EMAIL || process.env.OWNER_EMAIL || process.env.SMTP_USER;
   
@@ -178,7 +178,7 @@ export async function sendContactEmail({ name, email, message }) {
   });
 }
 
-// Send confirmation email to sender
+
 export async function sendConfirmationEmail({ name, email }) {
   return resend.emails.send({
     from: `"Gaurav Singh" <${fromEmail}>`,
@@ -188,7 +188,7 @@ export async function sendConfirmationEmail({ name, email }) {
   });
 }
 
-// Send password reset email
+
 export async function sendPasswordResetEmail(email, resetLink) {
   return resend.emails.send({
     from: `"Portfolio Admin" <${fromEmail}>`,

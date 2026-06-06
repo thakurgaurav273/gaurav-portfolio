@@ -113,7 +113,6 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// MongoDB Connection
 const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio';
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB'))

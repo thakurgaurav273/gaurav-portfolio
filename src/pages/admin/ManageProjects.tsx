@@ -15,7 +15,7 @@ export default function ManageProjects() {
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [formData, setFormData] = useState({ title: '', description: '', image: '', githubUrl: '', liveUrl: '', features: '', tech: '' });
+  const [formData, setFormData] = useState({ title: '', description: '', image: '', media: [] as any[], githubUrl: '', liveUrl: '', features: '', tech: '' });
 
   const { data: projects, isLoading } = useQuery({
     queryKey: ['admin-projects'],
@@ -28,7 +28,7 @@ export default function ManageProjects() {
       queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
       toast.success('Project added');
       setIsOpen(false);
-      setFormData({ title: '', description: '', image: '', githubUrl: '', liveUrl: '', features: '', tech: '' });
+      setFormData({ title: '', description: '', image: '', media: [], githubUrl: '', liveUrl: '', features: '', tech: '' });
       setEditingId(null);
     }
   });
@@ -39,7 +39,7 @@ export default function ManageProjects() {
       queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
       toast.success('Project updated');
       setIsOpen(false);
-      setFormData({ title: '', description: '', image: '', githubUrl: '', liveUrl: '', features: '', tech: '' });
+      setFormData({ title: '', description: '', image: '', media: [], githubUrl: '', liveUrl: '', features: '', tech: '' });
       setEditingId(null);
     }
   });
@@ -57,7 +57,8 @@ export default function ManageProjects() {
     const payload = {
       title: formData.title,
       description: formData.description,
-      image: formData.image,
+      image: formData.media.length > 0 ? formData.media[0].url : formData.image, // Fallback legacy image
+      media: formData.media,
       githubUrl: formData.githubUrl,
       liveUrl: formData.liveUrl,
       features: formData.features.split(',').map(i => i.trim()).filter(Boolean),
@@ -83,7 +84,13 @@ export default function ManageProjects() {
       const res = await api.post('/upload', form, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setFormData((prev) => ({ ...prev, image: res.data.url }));
+      const url = res.data.url;
+      const type = file.type.startsWith('video') ? 'video' : 'image';
+      setFormData((prev) => ({ 
+        ...prev, 
+        image: prev.media.length === 0 ? url : prev.image,
+        media: [...prev.media, { url, type }] 
+      }));
       toast.success('Image uploaded successfully');
     } catch (err) {
       toast.error('Failed to upload image');
@@ -94,7 +101,7 @@ export default function ManageProjects() {
 
   const openCreateDialog = () => {
     setEditingId(null);
-    setFormData({ title: '', description: '', image: '', githubUrl: '', liveUrl: '', features: '', tech: '' });
+    setFormData({ title: '', description: '', image: '', media: [], githubUrl: '', liveUrl: '', features: '', tech: '' });
     setIsOpen(true);
   };
 
@@ -104,6 +111,7 @@ export default function ManageProjects() {
       title: project.title || '', 
       description: project.description || '', 
       image: project.image || '', 
+      media: project.media?.length ? project.media : (project.image ? [{ url: project.image, type: 'image' }] : []),
       githubUrl: project.githubUrl || '', 
       liveUrl: project.liveUrl || '', 
       features: project.features?.join(', ') || '', 
@@ -138,15 +146,55 @@ export default function ManageProjects() {
                   <Label htmlFor="title">Title</Label>
                   <Input id="title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} required />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="image">Image URL</Label>
-                  <div className="flex gap-2">
-                    <Input id="image" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className="flex-1" />
-                    <div className="relative">
-                      <Input type="file" accept="image/*" onChange={handleFileUpload} className="absolute inset-0 opacity-0 cursor-pointer w-full" disabled={isUploading} />
-                      <Button type="button" variant="outline" disabled={isUploading}>
-                        {isUploading ? 'Uploading...' : 'Upload'}
+                <div className="space-y-2 col-span-2">
+                  <Label>Media Items (Images / Videos)</Label>
+                  <div className="space-y-2">
+                    {formData.media.map((m, i) => (
+                      <div key={i} className="flex gap-2 items-center">
+                        <select 
+                          value={m.type} 
+                          onChange={(e) => {
+                            const newMedia = [...formData.media];
+                            newMedia[i].type = e.target.value;
+                            setFormData({...formData, media: newMedia});
+                          }} 
+                          className="p-2 text-sm bg-background border border-input rounded-md"
+                        >
+                          <option value="image">Image</option>
+                          <option value="video">Video</option>
+                        </select>
+                        <Input 
+                          value={m.url} 
+                          onChange={(e) => {
+                            const newMedia = [...formData.media];
+                            newMedia[i].url = e.target.value;
+                            setFormData({...formData, media: newMedia});
+                          }} 
+                          placeholder="URL" 
+                        />
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon"
+                          onClick={() => {
+                            const newMedia = formData.media.filter((_, idx) => idx !== i);
+                            setFormData({...formData, media: newMedia});
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </Button>
+                      </div>
+                    ))}
+                    <div className="flex gap-2 pt-2">
+                      <Button type="button" variant="outline" onClick={() => setFormData({...formData, media: [...formData.media, { url: '', type: 'image' }]})}>
+                        + Add Media URL
                       </Button>
+                      <div className="relative">
+                        <Input type="file" accept="image/*,video/*" onChange={handleFileUpload} className="absolute inset-0 opacity-0 cursor-pointer w-full" disabled={isUploading} />
+                        <Button type="button" variant="secondary" disabled={isUploading}>
+                          {isUploading ? 'Uploading...' : 'Upload File'}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>

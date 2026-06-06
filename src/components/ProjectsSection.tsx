@@ -92,10 +92,12 @@ const ProjectsSection = () => {
     retry: false
   });
 
-  const displayProjects = dynamicProjects && dynamicProjects.length > 0 ? dynamicProjects : projects;
+  const displayProjects = dynamicProjects && dynamicProjects.length > 0 
+    ? dynamicProjects.slice(0, 3) 
+    : projects.slice(0, 3);
 
   return (
-    <section id="projects" className="section-padding bg-section-alt">
+    <section id="projects" className="section-padding bg-transparent">
       <div className="container-custom">
         <motion.div
           ref={ref}
@@ -131,9 +133,9 @@ const ProjectsSection = () => {
                 
                 <div className="relative glass-card rounded-[2rem] p-2 border border-border/50 overflow-hidden transform transition-transform duration-700 group-hover:scale-[1.02]">
                   <div className="relative rounded-[1.5rem] overflow-hidden bg-secondary/30 aspect-video flex items-center justify-center cursor-pointer"
-                       onClick={() => setSelectedImage({ src: project.image, alt: project.title })}>
+                       onClick={() => setSelectedImage({ src: project.media?.length ? project.media[0].url : project.image, alt: project.title })}>
                     <img
-                      src={project.image}
+                      src={project.media?.length ? project.media[0].url : project.image}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -209,6 +211,21 @@ const ProjectsSection = () => {
             </motion.div>
           ))}
         </div>
+
+        {displayProjects.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-24 flex justify-center"
+          >
+            <Link to="/all-projects">
+              <Button size="lg" variant="outline" className="text-lg px-10 py-7 rounded-full border-primary/50 hover:bg-primary/10 transition-all duration-300 shadow-[0_0_15px_rgba(var(--primary),0.1)] hover:shadow-[0_0_25px_rgba(var(--primary),0.3)] bg-background/50 backdrop-blur-md">
+                View All Projects
+              </Button>
+            </Link>
+          </motion.div>
+        )}
       </div>
 
 

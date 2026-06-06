@@ -12,7 +12,6 @@ const Index = () => {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    // Check system preference or stored preference
     const stored = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const shouldBeDark = stored ? stored === 'dark' : prefersDark;
@@ -20,7 +19,6 @@ const Index = () => {
     setIsDark(shouldBeDark);
     document.documentElement.classList.toggle('dark', shouldBeDark);
 
-    // Scroll to section based on URL path
     const path = window.location.pathname.substring(1);
     if (path && ['skills', 'experience', 'projects', 'contact'].includes(path)) {
       setTimeout(() => {

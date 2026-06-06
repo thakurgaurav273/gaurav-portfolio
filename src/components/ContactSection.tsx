@@ -42,7 +42,7 @@ const ContactSection = () => {
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   const recaptchaRef = useRef<HTMLDivElement>(null);
 
-  // Load reCAPTCHA
+
   useEffect(() => {
     const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
     if (!siteKey) {
@@ -50,13 +50,13 @@ const ContactSection = () => {
       return;
     }
 
-    // Check if script is already loaded
+
     if (window.grecaptcha) {
       setRecaptchaLoaded(true);
       return;
     }
 
-    // Check if script tag already exists
+
     const existingScript = document.querySelector(`script[src*="recaptcha/api.js"]`);
     if (existingScript) {
       const checkRecaptcha = () => {
@@ -70,7 +70,7 @@ const ContactSection = () => {
       return;
     }
 
-    // Load reCAPTCHA script dynamically with site key
+
     const script = document.createElement('script');
     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
     script.async = true;
@@ -91,7 +91,7 @@ const ContactSection = () => {
     document.head.appendChild(script);
 
     return () => {
-      // Cleanup: remove script if component unmounts
+
       const scriptToRemove = document.querySelector(`script[src*="recaptcha/api.js?render=${siteKey}"]`);
       if (scriptToRemove) {
         scriptToRemove.remove();
@@ -123,7 +123,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      // Get reCAPTCHA token
+
       const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
       let recaptchaToken = '';
 
@@ -135,7 +135,7 @@ const ContactSection = () => {
                 resolve();
               });
             } else {
-              // If ready is not available, wait a bit and try again
+
               setTimeout(() => {
                 if (window.grecaptcha && window.grecaptcha.ready) {
                   window.grecaptcha.ready(() => resolve());
@@ -151,18 +151,18 @@ const ContactSection = () => {
           });
         } catch (recaptchaError: any) {
           console.warn('reCAPTCHA error (continuing without token):', recaptchaError);
-          // Don't block form submission - let backend handle it
-          // The backend can choose to accept or reject requests without reCAPTCHA
+
+
           recaptchaToken = '';
           
-          // Only show warning if it's a critical error
+
           if (recaptchaError?.message?.includes('Invalid site key')) {
             console.warn('reCAPTCHA site key may be invalid or domain not registered. Form will submit without reCAPTCHA verification.');
           }
         }
       }
 
-      // Use proxy in development, or VITE_API_URL in production
+
       const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:3001');
       const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
@@ -187,7 +187,7 @@ const ContactSection = () => {
         description: "Thank you for reaching out. I'll get back to you soon!",
       });
 
-      // Reset after delay
+
       setTimeout(() => {
         setFormData({ name: '', email: '', message: '' });
         setIsSubmitted(false);

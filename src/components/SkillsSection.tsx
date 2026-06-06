@@ -81,7 +81,13 @@ const SkillsSection = () => {
     retry: false
   });
 
-  // Fallback data if API is empty
+  const { data: hero } = useQuery({
+    queryKey: ['public-hero'],
+    queryFn: async () => (await api.get('/content/hero')).data,
+    retry: false
+  });
+
+
   const displaySkills = skills && skills.length > 0 ? skills : [
     { category: 'Frontend', items: ['React.js', 'Next.js', 'TypeScript', 'Tailwind CSS'] },
     { category: 'Backend', items: ['Node.js', 'Express.js', 'PostgreSQL', 'MongoDB'] },
@@ -157,12 +163,12 @@ const SkillsSection = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-2xl rounded-[2rem]" />
           <div className="relative glass-card rounded-[2rem] p-8 md:p-12 border border-primary/20 backdrop-blur-xl bg-background/40">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 divide-x-0 md:divide-x divide-border/50">
-              {[
+              {(hero?.stats && hero.stats.length > 0 ? hero.stats : [
                 { value: '2+', label: 'Years Experience' },
                 { value: '10+', label: 'Projects Completed' },
                 { value: '3', label: 'UI Kits Built' },
                 { value: '100%', label: 'Client Satisfaction' },
-              ].map((stat, index) => (
+              ]).map((stat: any, index: number) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, scale: 0.8 }}

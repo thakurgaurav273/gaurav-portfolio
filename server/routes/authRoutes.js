@@ -8,7 +8,7 @@ import { sendPasswordResetEmail } from '../emailService.js';
 
 const router = express.Router();
 
-// Login route
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Verify token / Get current admin
+
 router.get('/me', requireAuth, async (req, res) => {
   try {
     const admin = await Admin.findById(req.admin.adminId).select('-password');
@@ -53,14 +53,14 @@ router.get('/me', requireAuth, async (req, res) => {
   }
 });
 
-// Forgot password route
+
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
     const admin = await Admin.findOne({ email });
     
     if (!admin) {
-      // Don't leak whether the email exists or not
+
       return res.json({ message: 'If that email is in our database, a reset link has been sent.' });
     }
 
@@ -81,7 +81,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// Reset password route
+
 router.post('/reset-password', async (req, res) => {
   try {
     const { token, email, password } = req.body;
