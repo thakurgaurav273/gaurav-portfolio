@@ -12,6 +12,7 @@ router.get('/hero', async (req, res) => {
     const hero = await Hero.findOne();
     res.json(hero || {});
   } catch (error) {
+    console.error("GET /hero error:", error);
     res.status(500).json({ error: 'Server error' });
   }
 });
