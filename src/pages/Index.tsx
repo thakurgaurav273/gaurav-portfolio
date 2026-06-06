@@ -19,6 +19,17 @@ const Index = () => {
     
     setIsDark(shouldBeDark);
     document.documentElement.classList.toggle('dark', shouldBeDark);
+
+    // Scroll to section based on URL path
+    const path = window.location.pathname.substring(1);
+    if (path && ['skills', 'experience', 'projects', 'contact'].includes(path)) {
+      setTimeout(() => {
+        const element = document.getElementById(path);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   }, []);
 
   const toggleTheme = () => {

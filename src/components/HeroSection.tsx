@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Download, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/lib/api';
 import profileImage from '@/assets/profile.png';
 
 const socialLinks = [
@@ -10,11 +12,23 @@ const socialLinks = [
 ];
 
 const HeroSection = () => {
+  const { data: heroData } = useQuery({
+    queryKey: ['public-hero'],
+    queryFn: async () => (await api.get('/content/hero')).data,
+    retry: false
+  });
+
+  const displayData = heroData?.name ? heroData : {
+    name: 'Gaurav Singh',
+    subtitle: 'A Code Artisan who',
+    description: "Because seamless experiences start with beautiful design and solid code. I'm an Associate Software Developer at CometChat, passionate about building clean, scalable applications.",
+  };
+
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative pt-20">
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Text Content */}
+
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -36,7 +50,7 @@ const HeroSection = () => {
               transition={{ delay: 0.3 }}
               className="text-5xl md:text-7xl font-display font-bold mb-4"
             >
-              <span className="gradient-text">Gaurav Singh</span>
+              <span className="gradient-text">{displayData.name}</span>
             </motion.h1>
             
             <motion.div
@@ -62,12 +76,10 @@ const HeroSection = () => {
               transition={{ delay: 0.5 }}
               className="text-muted-foreground text-lg mb-8 max-w-lg"
             >
-              Because seamless experiences start with beautiful design and solid code. 
-              I'm an Associate Software Developer at CometChat, passionate about building 
-              clean, scalable applications.
+              {displayData.description}
             </motion.p>
             
-            {/* CTA Buttons */}
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -86,7 +98,7 @@ const HeroSection = () => {
               </Button>
             </motion.div>
             
-            {/* Social Links */}
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -110,7 +122,7 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
           
-          {/* Profile Image */}
+
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -118,10 +130,10 @@ const HeroSection = () => {
             className="order-1 lg:order-2 flex justify-center"
           >
             <div className="relative">
-              {/* Glow effect behind image */}
+
               <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-accent/30 rounded-full blur-3xl scale-110" />
               
-              {/* Profile container */}
+
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -137,7 +149,7 @@ const HeroSection = () => {
                   </div>
                 </div>
                 
-                {/* Floating badges */}
+
                 <motion.div
                   animate={{ y: [0, -5, 0], rotate: [0, 5, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -166,7 +178,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
         
-        {/* Scroll indicator */}
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

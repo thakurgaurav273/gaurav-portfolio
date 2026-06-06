@@ -1,27 +1,10 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Create transporter
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
-  auth: {
-    user: process.env.MY_EMAIL || process.env.SMTP_USER,
-    pass: process.env.MY_PASSWORD || process.env.SMTP_PASS,
-  },
-});
-
-// Verify transporter configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('Email transporter error:', error);
-  } else {
-    console.log('✅ Email server is ready to send messages');
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder');
+const fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
 // Email templates
 const getOwnerEmailTemplate = ({ name, email, message }) => `
@@ -182,35 +165,41 @@ function escapeHtml(text) {
 // Send email to owner
 export async function sendContactEmail({ name, email, message }) {
   const ownerEmail = process.env.MY_EMAIL || process.env.OWNER_EMAIL || process.env.SMTP_USER;
-  const fromEmail = process.env.MY_EMAIL || process.env.SMTP_USER;
   
   if (!ownerEmail) {
-    throw new Error('MY_EMAIL or OWNER_EMAIL not configured');
+    console.warn('MY_EMAIL not configured, using a fallback for contact email (might fail if not verified).');
   }
 
-  const mailOptions = {
+  return resend.emails.send({
     from: `"Gaurav Singh Portfolio" <${fromEmail}>`,
-    to: ownerEmail,
+    to: [ownerEmail || fromEmail],
     subject: `New Contact Form: ${name} (${email})`,
     html: getOwnerEmailTemplate({ name, email, message }),
-    text: `New Contact Form Submission\n\nFrom: ${name} (${email})\n\nMessage:\n${message}`,
-  };
-
-  return transporter.sendMail(mailOptions);
+  });
 }
 
 // Send confirmation email to sender
 export async function sendConfirmationEmail({ name, email }) {
-  const fromEmail = process.env.MY_EMAIL || process.env.SMTP_USER;
-  
-  const mailOptions = {
+  return resend.emails.send({
     from: `"Gaurav Singh" <${fromEmail}>`,
-    to: email,
+    to: [email],
     subject: 'Message Received - Gaurav Singh',
     html: getConfirmationEmailTemplate({ name }),
-    text: `Hi ${name},\n\nThank you for reaching out! I've received your message and will get back to you within 24 hours.\n\nBest regards,\nGaurav Singh`,
-  };
+  });
+}
 
-  return transporter.sendMail(mailOptions);
+// Send password reset email
+export async function sendPasswordResetEmail(email, resetLink) {
+  return resend.emails.send({
+    from: `"Portfolio Admin" <${fromEmail}>`,
+    to: [email],
+    subject: 'Password Reset Request',
+    html: `
+      <h2>Password Reset Request</h2>
+      <p>We received a request to reset your password. Click the link below to set a new password:</p>
+      <a href="${resetLink}">Reset Password</a>
+      <p>If you didn't request this, you can safely ignore this email.</p>
+    `,
+  });
 }
 

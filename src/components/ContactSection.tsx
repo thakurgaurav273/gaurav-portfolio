@@ -224,7 +224,6 @@ const ContactSection = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-          {/* Left side - Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -267,7 +266,6 @@ const ContactSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right side - Form */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -275,7 +273,6 @@ const ContactSection = () => {
           >
             <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-8">
               <div className="space-y-6">
-                {/* Name */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Full Name
@@ -297,7 +294,6 @@ const ContactSection = () => {
                   )}
                 </div>
 
-                {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
                     Email Address
@@ -320,7 +316,6 @@ const ContactSection = () => {
                   )}
                 </div>
 
-                {/* Message */}
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
                     Your Message
@@ -342,7 +337,6 @@ const ContactSection = () => {
                   )}
                 </div>
 
-                {/* reCAPTCHA notice */}
                 {import.meta.env.VITE_RECAPTCHA_SITE_KEY && (
                   <p className="text-xs text-muted-foreground text-center">
                     This site is protected by reCAPTCHA and the Google{' '}

@@ -20,6 +20,18 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace('#', '');
+    const path = id === 'home' ? '/' : `/${id}`;
+    window.history.pushState({}, '', path);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -39,9 +51,10 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
     >
       <nav className="container-custom py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+
           <motion.a
             href="#home"
+            onClick={(e) => handleScrollTo(e, '#home')}
             className="flex items-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -53,12 +66,13 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
             />
           </motion.a>
 
-          {/* Desktop Navigation */}
+
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleScrollTo(e, link.href)}
                 className="nav-link font-medium"
               >
                 {link.label}
@@ -66,7 +80,7 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
             ))}
           </div>
 
-          {/* Theme Toggle & Mobile Menu */}
+
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -96,7 +110,7 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -110,7 +124,7 @@ const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
                   key={link.label}
                   href={link.href}
                   className="nav-link font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => handleScrollTo(e, link.href)}
                 >
                   {link.label}
                 </a>

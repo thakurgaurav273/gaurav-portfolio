@@ -16,7 +16,7 @@ const Footer = ({ isDark }: FooterProps) => {
     <footer className="py-8 border-t border-border">
       <div className="container-custom">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Logo */}
+
           <motion.a
             href="#home"
             className="flex items-center"
@@ -30,12 +30,12 @@ const Footer = ({ isDark }: FooterProps) => {
             />
           </motion.a>
 
-          {/* Copyright */}
+
           <p className="text-muted-foreground text-sm flex items-center gap-1">
             Made with <Heart className="w-4 h-4 text-primary fill-primary" /> by Gaurav Singh © {new Date().getFullYear()}
           </p>
 
-          {/* Social Links */}
+
           <div className="flex gap-4">
             {socialLinks.map((social) => (
               <motion.a

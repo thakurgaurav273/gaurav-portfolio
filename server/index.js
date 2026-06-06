@@ -2,18 +2,33 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import mongoose from 'mongoose';
 import { sendContactEmail, sendConfirmationEmail } from './emailService.js';
+import uploadRoutes from './routes/uploadRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import contentRoutes from './routes/contentRoutes.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 
-// Verify reCAPTCHA token
+app.use('/api/auth', authRoutes);
+app.use('/api/content', contentRoutes);
+app.use('/api/upload', uploadRoutes);
+
+
 async function verifyRecaptcha(token) {
   const secretKey = process.env.SITE_SECRET_KEY;
   
@@ -45,17 +60,14 @@ async function verifyRecaptcha(token) {
   }
 }
 
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
-// Contact form endpoint
 app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message, recaptchaToken } = req.body;
 
-    // Basic validation
     if (!name || !email || !message) {
       return res.status(400).json({
         success: false,
@@ -63,7 +75,6 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
@@ -72,7 +83,6 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // Verify reCAPTCHA (optional if secret key not configured)
     const secretKey = process.env.SITE_SECRET_KEY;
     if (secretKey) {
       const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
@@ -86,10 +96,8 @@ app.post('/api/contact', async (req, res) => {
       console.warn('reCAPTCHA verification skipped - SITE_SECRET_KEY not configured');
     }
 
-    // Send email to owner
     await sendContactEmail({ name, email, message });
 
-    // Send confirmation email to sender
     await sendConfirmationEmail({ name, email });
 
     res.json({
@@ -104,6 +112,12 @@ app.post('/api/contact', async (req, res) => {
     });
   }
 });
+
+// MongoDB Connection
+const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio';
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
