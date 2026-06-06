@@ -59,7 +59,7 @@ const SkillPill = ({ name, delay }: { name: string; delay: number }) => {
       <img 
         src={`https://cdn.simpleicons.org/${slug}`} 
         alt={name} 
-        className="w-5 h-5 brightness-0 invert opacity-60 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100 transition-all duration-300"
+        className="w-5 h-5 opacity-60 transition-all duration-300 brightness-0 dark:invert group-hover:brightness-100 group-hover:opacity-100 dark:group-hover:invert-0"
         onError={(e) => {
           e.currentTarget.style.display = 'none';
           e.currentTarget.nextElementSibling?.classList.remove('hidden');
