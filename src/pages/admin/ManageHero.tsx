@@ -15,6 +15,8 @@ export default function ManageHero() {
     name: '',
     subtitle: '',
     description: '',
+    resumeUrl: '',
+    about: '',
     stats: [] as { value: string; label: string }[]
   });
 
@@ -29,6 +31,8 @@ export default function ManageHero() {
         name: hero.name || '',
         subtitle: hero.subtitle || '',
         description: hero.description || '',
+        resumeUrl: hero.resumeUrl || '',
+        about: (hero.about || []).join('\n\n'),
         stats: hero.stats || []
       });
     }
@@ -36,10 +40,13 @@ export default function ManageHero() {
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      await api.put('/content/hero', data);
+      // About is edited as one textarea; blank lines separate paragraphs.
+      const about = data.about.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+      await api.put('/content/hero', { ...data, about });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-hero'] });
+      queryClient.invalidateQueries({ queryKey: ['public-hero'] });
       toast.success('Hero section updated successfully');
     },
     onError: () => {
@@ -98,6 +105,28 @@ export default function ManageHero() {
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="about">About</Label>
+              <Textarea
+                id="about"
+                rows={8}
+                placeholder="Separate paragraphs with a blank line."
+                value={formData.about}
+                onChange={(e) => setFormData({ ...formData, about: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="resumeUrl">Resume URL</Label>
+              <Input
+                id="resumeUrl"
+                type="url"
+                placeholder="https://..."
+                value={formData.resumeUrl}
+                onChange={(e) => setFormData({ ...formData, resumeUrl: e.target.value })}
+              />
+            </div>
+
             <div className="space-y-4 pt-4 border-t border-border/50">
               <div className="flex items-center justify-between">
                 <Label>Performance Stats</Label>
@@ -147,7 +176,7 @@ export default function ManageHero() {
                   </div>
                 ))}
                 {formData.stats.length === 0 && (
-                  <p className="text-sm text-muted-foreground">No stats added. These will appear between the Skills and Experience sections.</p>
+                  <p className="text-sm text-muted-foreground">No stats added. These appear in the About section.</p>
                 )}
               </div>
             </div>

@@ -106,7 +106,7 @@ export default function ManageProjects() {
   };
 
   const openEditDialog = (project: any) => {
-    setEditingId(project._id);
+    setEditingId(project.id);
     setFormData({ 
       title: project.title || '', 
       description: project.description || '', 
@@ -231,7 +231,7 @@ export default function ManageProjects() {
 
       <div className="grid gap-4">
         {projects?.map((project: any) => (
-          <Card key={project._id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
+          <Card key={project.id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
             <CardHeader className="flex flex-row items-center justify-between p-5">
               <div>
                 <CardTitle>{project.title}</CardTitle>
@@ -249,7 +249,7 @@ export default function ManageProjects() {
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  onClick={() => deleteMutation.mutate(project._id)}
+                  onClick={() => deleteMutation.mutate(project.id)}
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />

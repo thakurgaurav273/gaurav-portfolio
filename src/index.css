@@ -1,90 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+@import 'lenis/dist/lenis.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Dark-first developer palette: near-black zinc surfaces, high-contrast type and a
+  single emerald accent that fades to cyan in gradients (highlights, focus, status).
+*/
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 10%;
+    --background: 240 10% 3.9%;   /* #09090B */
+    --foreground: 0 0% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 10%;
+    --card: 240 7% 6.5%;          /* #0F0F12 */
+    --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
+    --popover: 240 7% 7%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 252 87% 64%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 96%;          /* buttons are light on dark */
+    --primary-foreground: 240 10% 4%;
 
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 10% 10%;
+    --secondary: 240 5% 11%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
+    --muted: 240 5% 11%;
+    --muted-foreground: 240 5% 63%;
 
-    --accent: 280 80% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 152 72% 56%;        /* emerald */
+    --accent-2: 189 85% 60%;      /* cyan, gradient partner */
+    --accent-foreground: 240 10% 4%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 252 87% 64%;
+    --success: 152 72% 56%;
+
+    --border: 240 5% 15%;
+    --input: 240 5% 18%;
+    --ring: 152 72% 56%;
 
     --radius: 0.75rem;
-
-    /* Custom tokens */
-    --gradient-start: 252 87% 64%;
-    --gradient-end: 280 80% 60%;
-    --glow: 252 87% 64%;
-    --surface-glass: 0 0% 100% / 0.8;
-    --surface-elevated: 0 0% 98%;
-    
-    --hero-bg: linear-gradient(135deg, hsl(240 10% 98%) 0%, hsl(252 30% 96%) 100%);
-    --section-bg-alt: 252 30% 98%;
-  }
-
-  .dark {
-    --background: 240 15% 6%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 15% 9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 15% 9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 252 87% 64%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 240 10% 15%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 10% 15%;
-    --muted-foreground: 240 5% 65%;
-
-    --accent: 280 80% 60%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 10% 18%;
-    --input: 240 10% 18%;
-    --ring: 252 87% 64%;
-
-    /* Custom tokens - dark */
-    --gradient-start: 252 87% 64%;
-    --gradient-end: 280 80% 60%;
-    --glow: 252 87% 64%;
-    --surface-glass: 240 15% 12% / 0.8;
-    --surface-elevated: 240 15% 10%;
-    
-    --hero-bg: linear-gradient(135deg, hsl(240 15% 6%) 0%, hsl(252 20% 10%) 100%);
-    --section-bg-alt: 252 20% 8%;
   }
 }
 
@@ -94,139 +52,176 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    color-scheme: dark;
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-tight;
+    @apply font-sans font-semibold tracking-tight text-foreground;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.3);
+    color: hsl(var(--foreground));
+  }
+
+  /* Faint film grain over the whole page. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border: 3px solid hsl(var(--background));
+    border-radius: 999px;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply backdrop-blur-xl border border-border/50;
-    background: hsl(var(--surface-glass));
+  .container-custom {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
   }
 
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  .section {
+    @apply py-24 md:py-32;
   }
 
-  .gradient-border {
-    position: relative;
+  /* Large, tight sans headlines; *emphasis* picks up the accent gradient. */
+  .display {
+    @apply font-sans font-semibold tracking-[-0.035em] text-foreground;
+    line-height: 1.02;
   }
 
-  .gradient-border::before {
+  .display em,
+  .text-gradient {
+    @apply not-italic;
+    background: linear-gradient(100deg, hsl(var(--accent)) 10%, hsl(var(--accent-2)) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Kept for inner pages that still lay out with a label column. */
+  .rail {
+    @apply grid gap-x-8 gap-y-6 md:grid-cols-12;
+  }
+
+  .rail-label {
+    @apply md:col-span-3;
+  }
+
+  .rail-body {
+    @apply md:col-span-9;
+  }
+
+  /* Blueprint grid behind the hero, faded out towards the edges. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(0 0% 100% / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(0 0% 100% / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
+  }
+
+  /* Soft accent glow used behind the hero and contact block. */
+  .glow {
+    background:
+      radial-gradient(40% 50% at 30% 30%, hsl(var(--accent) / 0.18), transparent 70%),
+      radial-gradient(35% 45% at 75% 20%, hsl(var(--accent-2) / 0.14), transparent 70%);
+    filter: blur(20px);
+  }
+
+  .frame {
+    @apply overflow-hidden rounded-2xl border border-border bg-card;
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  }
+
+  /*
+    Card with a cursor-following spotlight. --x/--y are set by <Spotlight>; the
+    ::before paints the glow and ::after lights up the border under the cursor.
+  */
+  .spot-card {
+    @apply relative overflow-hidden rounded-2xl border border-border bg-card;
+    isolation: isolate;
+  }
+
+  .spot-card::before,
+  .spot-card::after {
     content: '';
     position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .spot-card::before {
     inset: 0;
-    padding: 1px;
+    z-index: -1;
+    background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), hsl(var(--accent) / 0.09), transparent 45%);
+  }
+
+  .spot-card::after {
+    inset: -1px;
     border-radius: inherit;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--x, 50%) var(--y, 50%), hsl(var(--accent) / 0.55), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
 
-  .glow {
-    box-shadow: 0 0 40px -10px hsl(var(--glow) / 0.5);
+  .spot-card:hover::before,
+  .spot-card:hover::after {
+    opacity: 1;
   }
 
-  .glow-sm {
-    box-shadow: 0 0 20px -5px hsl(var(--glow) / 0.3);
+  /* Small mono label used for section eyebrows and metadata. */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground;
   }
 
-  .section-padding {
-    @apply py-20 md:py-32;
+  .link-underline {
+    @apply underline decoration-foreground/25 decoration-1 underline-offset-[5px] transition-colors hover:decoration-accent;
   }
 
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  .chip {
+    @apply inline-flex items-center rounded-md border border-border bg-secondary/60 px-2 py-0.5 font-mono text-[12px] leading-5 text-foreground/75;
   }
 
-  .nav-link {
-    @apply relative text-muted-foreground hover:text-foreground transition-colors duration-300;
+  .btn-primary {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-foreground px-6 text-[15px] font-medium text-background transition-all hover:bg-accent hover:shadow-[0_0_30px_-6px_hsl(var(--accent)/0.7)];
   }
 
-  .nav-link::after {
-    content: '';
-    @apply absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300;
-    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  .btn-ghost {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 text-[15px] font-medium text-foreground backdrop-blur transition-colors hover:border-foreground/30 hover:bg-secondary;
   }
 
-  .nav-link:hover::after {
-    @apply w-full;
-  }
-
-  .skill-icon {
-    @apply w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300;
-    background: hsl(var(--surface-elevated));
-  }
-
-  .skill-icon:hover {
-    @apply scale-110;
-    box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.4);
+  .kbd {
+    @apply inline-flex h-5 min-w-5 items-center justify-center rounded border border-border bg-secondary px-1 font-mono text-[10px] text-muted-foreground;
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  .card-flip-container {
-    perspective: 1000px;
-    transform-style: preserve-3d;
-  }
-
-  .card-front,
-  .card-back {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .card-back {
-    transform: rotateY(180deg);
-  }
-
-  .card-flip-container:hover .card-front {
-    transform: rotateY(-180deg);
-  }
-
-  .card-flip-container:hover .card-back {
-    transform: rotateY(0deg);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px -5px hsl(var(--glow) / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px -5px hsl(var(--glow) / 0.5);
-  }
+/* Command palette: quiet selection instead of the full accent fill. */
+[cmdk-item][data-selected='true'] {
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+  box-shadow: inset 2px 0 0 hsl(var(--accent));
 }

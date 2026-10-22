@@ -1,50 +1,57 @@
-# Gaurav Singh Backend
+# Portfolio API
 
-Backend server for handling email notifications from the contact form.
+Express API for the portfolio: public content, admin auth, image uploads and the contact form.
+Data lives in PostgreSQL (Neon in production) and is accessed through Prisma.
 
 ## Setup
 
-1. Install dependencies:
 ```bash
-npm install
+npm install                 # also runs `prisma generate`
+cp .env.example .env        # fill in DATABASE_URL / DIRECT_URL and the rest
+npm run db:deploy           # apply migrations
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=... npm run db:seed
+npm run dev                 # http://localhost:3001
 ```
 
-2. Create a `.env` file based on `env.example`:
+### Neon
+
+Create a project at neon.tech, then copy two connection strings from **Connect**:
+
+- `DATABASE_URL` — the **pooled** string (host contains `-pooler`). Used by the app at runtime.
+- `DIRECT_URL` — the direct string. Used by Prisma Migrate.
+
+### Local database without Neon
+
 ```bash
-cp env.example .env
+npx prisma dev -d -n portfolio-local   # prints a postgres://… URL ending in /template1
 ```
 
-3. Configure your settings in `.env`:
-   - **Email Settings:**
-     - `MY_EMAIL`: Your email address (e.g., your-email@gmail.com)
-     - `MY_PASSWORD`: Your email app password (for Gmail, generate an App Password)
-     - For Gmail: Google Account → Security → 2-Step Verification → App passwords
-   - **reCAPTCHA Settings:**
-     - `SITE_KEY`: Your reCAPTCHA v3 site key (from Google reCAPTCHA console)
-     - `SITE_SECRET_KEY`: Your reCAPTCHA v3 secret key
-     - Get keys from: https://www.google.com/recaptcha/admin
+Create a `portfolio` database on that server and point `DATABASE_URL` at `/portfolio` rather than
+`/template1` — Postgres clones `template1` for every new database, including Prisma's shadow database.
 
-4. Start the server:
-```bash
-npm run dev  # Development mode with auto-reload
-# or
-npm start    # Production mode
-```
+## Scripts
 
-## Environment Variables
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Start the API with file watching |
+| `npm run db:migrate` | Create and apply a migration after editing `prisma/schema.prisma` |
+| `npm run db:deploy` | Apply pending migrations (use in CI / production) |
+| `npm run db:seed` | Load `prisma/seed-data.json` into empty tables; add `-- --reset` to replace content |
+| `npm run db:studio` | Browse the database in Prisma Studio |
 
-- `PORT`: Server port (default: 3001)
-- `MY_EMAIL`: Your email address (used for sending emails)
-- `MY_PASSWORD`: Your email app password
-- `SITE_KEY`: reCAPTCHA v3 site key (for frontend)
-- `SITE_SECRET_KEY`: reCAPTCHA v3 secret key (for backend verification)
-- `SMTP_HOST`: SMTP server hostname (optional, defaults to smtp.gmail.com)
-- `SMTP_PORT`: SMTP server port (optional, defaults to 587)
-- `SMTP_SECURE`: Use secure connection (optional, defaults to false)
+## API
 
-## API Endpoints
+Public:
 
-- `GET /health` - Health check
-- `POST /api/contact` - Submit contact form
-  - Body: `{ name: string, email: string, message: string }`
+- `GET /health`
+- `GET /api/content/hero`
+- `GET /api/content/projects` · `GET /api/content/projects/:slug`
+- `GET /api/content/experience`
+- `GET /api/content/skills`
+- `POST /api/contact` — `{ name, email, message, recaptchaToken? }`
 
+Admin (Bearer token from `POST /api/auth/login`):
+
+- `PUT /api/content/hero` (partial updates allowed)
+- `POST | PUT /:id | DELETE /:id` on `/api/content/projects`, `/experience`, `/skills`
+- `POST /api/upload` — multipart `image`, uploads to Cloudinary

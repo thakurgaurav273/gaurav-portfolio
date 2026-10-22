@@ -1,57 +1,41 @@
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+import { useHero } from '@/lib/content';
+import { socialIcon } from '@/lib/social';
+import { scrollToY } from '@/lib/scroll';
 
-const socialLinks = [
-  { icon: Github, href: 'https://github.com/thakurgaurav273', label: 'GitHub' },
-  { icon: Linkedin, href: 'https://linkedin.com/in/thakurgaurav273', label: 'LinkedIn' },
-  { icon: Mail, href: 'mailto:thakurgaurav273@gmail.com', label: 'Email' },
-];
+const Footer = () => {
+  const hero = useHero();
 
-interface FooterProps {
-  isDark: boolean;
-}
-
-const Footer = ({ isDark }: FooterProps) => {
   return (
-    <footer className="py-8 border-t border-border">
-      <div className="container-custom">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-
-          <motion.a
-            href="#home"
-            className="flex items-center"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <img 
-              src={isDark ? "/logo.png" : "/logo_dark.png"} 
-              alt="Gaurav Singh Logo" 
-              className="h-10 w-auto"
-            />
-          </motion.a>
-
-
-          <p className="text-muted-foreground text-sm flex items-center gap-1">
-            Made with <Heart className="w-4 h-4 text-primary fill-primary" /> by Gaurav Singh © {new Date().getFullYear()}
-          </p>
-
-
-          <div className="flex gap-4">
-            {socialLinks.map((social) => (
-              <motion.a
-                key={social.label}
-                href={social.href}
-                target="_blank"
+    <footer className="container-custom pb-10 pt-10">
+      <div className="flex flex-col gap-6 border-t border-border pt-8 text-sm md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="font-medium">© {new Date().getFullYear()} {hero.name}</p>
+          <p className="mt-1 font-mono text-xs text-muted-foreground">Built with React, Express, Prisma &amp; Postgres.</p>
+        </div>
+        <div className="flex items-center gap-1">
+          {hero.socialLinks.map((link) => {
+            const Icon = socialIcon(link.platform);
+            return (
+              <a
+                key={link.url}
+                href={link.url}
+                target={link.url.startsWith('mailto:') ? undefined : '_blank'}
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-colors"
-                aria-label={social.label}
+                aria-label={link.platform}
+                className="grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
-                <social.icon className="w-4 h-4" />
-              </motion.a>
-            ))}
-          </div>
+                <Icon className="h-4 w-4" />
+              </a>
+            );
+          })}
+          <button
+            onClick={() => scrollToY(0)}
+            className="ml-2 grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-accent/50 hover:text-accent"
+            aria-label="Back to top"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </footer>

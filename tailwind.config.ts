@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -14,8 +13,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Space Grotesk", "system-ui", "sans-serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Geist", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["Geist Mono", "ui-monospace", "SFMono-Regular", "monospace"],
+        // Kept as aliases so existing admin classes keep working.
+        display: ["Geist", "ui-sans-serif", "system-ui", "sans-serif"],
+        body: ["Geist", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,8 +53,8 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        glow: "hsl(var(--glow))",
-        "section-alt": "hsl(var(--section-bg-alt))",
+        success: "hsl(var(--success))",
+        "accent-2": "hsl(var(--accent-2))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -88,6 +90,14 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        blink: {
+          "0%, 50%": { opacity: "1" },
+          "50.01%, 100%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -97,6 +107,8 @@ export default {
         "fade-in-right": "fade-in-right 0.6s ease-out",
         "scale-in": "scale-in 0.4s ease-out",
         shimmer: "shimmer 2s infinite linear",
+        marquee: "marquee 40s linear infinite",
+        blink: "blink 1.1s step-end infinite",
       },
     },
   },

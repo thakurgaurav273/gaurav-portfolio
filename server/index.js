@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import mongoose from 'mongoose';
 import { sendContactEmail, sendConfirmationEmail } from './emailService.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import authRoutes from './routes/authRoutes.js';
@@ -23,41 +22,6 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
-
-let cached = global.mongoose;
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-async function connectDb() {
-  if (cached.conn) {
-    return cached.conn;
-  }
-  if (!cached.promise) {
-    mongoose.set('strictQuery', true);
-    cached.promise = mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio', {
-      bufferCommands: false,
-    }).then((mongoose) => {
-      console.log('✅ Connected to MongoDB');
-      return mongoose;
-    }).catch((error) => {
-      console.error('❌ MongoDB connection error:', error);
-      throw error;
-    });
-  }
-  cached.conn = await cached.promise;
-  return cached.conn;
-}
-
-app.use(async (req, res, next) => {
-  if (req.path === '/health') return next();
-  try {
-    await connectDb();
-    next();
-  } catch (error) {
-    res.status(500).json({ error: 'Database connection failed' });
-  }
-});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);

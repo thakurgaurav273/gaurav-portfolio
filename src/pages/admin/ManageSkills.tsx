@@ -71,7 +71,7 @@ export default function ManageSkills() {
   };
 
   const openEditDialog = (skill: any) => {
-    setEditingId(skill._id);
+    setEditingId(skill.id);
     setFormData({ category: skill.category, items: skill.items?.join(', ') || '' });
     setIsOpen(true);
   };
@@ -124,7 +124,7 @@ export default function ManageSkills() {
 
       <div className="grid gap-4">
         {skills?.map((skill: any) => (
-          <Card key={skill._id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
+          <Card key={skill.id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
             <CardHeader className="flex flex-row items-center justify-between p-5">
               <div>
                 <CardTitle>{skill.category}</CardTitle>
@@ -142,7 +142,7 @@ export default function ManageSkills() {
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  onClick={() => deleteMutation.mutate(skill._id)}
+                  onClick={() => deleteMutation.mutate(skill.id)}
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />

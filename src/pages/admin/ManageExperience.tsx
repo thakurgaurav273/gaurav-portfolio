@@ -27,7 +27,7 @@ export default function ManageExperience() {
       queryClient.invalidateQueries({ queryKey: ['admin-experience'] });
       toast.success('Experience added');
       setIsOpen(false);
-      setFormData({ company: '', role: '', period: '', description: '' });
+      setFormData({ company: '', role: '', startDate: '', endDate: '', isCurrent: false, description: '' });
       setEditingId(null);
     }
   });
@@ -76,7 +76,7 @@ export default function ManageExperience() {
   };
 
   const openEditDialog = (exp: any) => {
-    setEditingId(exp._id);
+    setEditingId(exp.id);
     setFormData({ 
       company: exp.company, 
       role: exp.role, 
@@ -162,7 +162,7 @@ export default function ManageExperience() {
 
       <div className="grid gap-4">
         {sortedExperience?.map((exp: any) => (
-          <Card key={exp._id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
+          <Card key={exp.id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
             <CardHeader className="flex flex-row items-center justify-between p-5">
               <div>
                 <CardTitle>{exp.company} - {exp.role}</CardTitle>
@@ -180,7 +180,7 @@ export default function ManageExperience() {
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  onClick={() => deleteMutation.mutate(exp._id)}
+                  onClick={() => deleteMutation.mutate(exp.id)}
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />

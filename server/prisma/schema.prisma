@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id                   String    @id @default(cuid())
+  email                String    @unique
+  password             String
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+// Single-row table holding the homepage intro.
+model Hero {
+  id          String   @id @default(cuid())
+  name        String
+  subtitle    String
+  description String
+  resumeUrl   String?
+  about       String[] // About-section paragraphs
+  socialLinks Json     @default("[]") // [{ platform, url }]
+  stats       Json     @default("[]") // [{ value, label }]
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String    @id @default(cuid())
+  company     String
+  role        String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean   @default(false)
+  description String[]
+  tech        String[]
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  description  String
+  tagline      String?
+  headline     String?
+  subheadline  String?
+  category     String?
+  status       String   @default("live") // live | in-progress
+  role         String?
+  timeline     String?
+  overview     String[] // case-study paragraphs
+  architecture String[] // engineering notes for the case study
+  features     String[]
+  tech         String[]
+  builtIn      String[]
+  capabilities Json     @default("[]") // [{ icon, title, description }]
+  screenshots  Json     @default("[]") // [{ url, alt, label, caption, orientation: 'desktop' | 'mobile' }]
+  stack        Json     @default("[]") // [{ layer, name, note }]
+  image        String?
+  media        Json     @default("[]") // [{ url, type: 'image' | 'video' }]
+  featured     Boolean  @default(false)
+  link         String?
+  githubUrl    String?
+  liveUrl      String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Skill {
+  id        String   @id @default(cuid())
+  category  String
+  items     String[]
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

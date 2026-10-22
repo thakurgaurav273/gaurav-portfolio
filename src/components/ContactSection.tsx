@@ -1,385 +1,213 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { Mail, Send, User, MessageSquare, Loader2, CheckCircle, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { z } from 'zod';
+import { Check, Copy, Loader2, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { isAxiosError } from 'axios';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { z } from 'zod';
-
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-      reset: (widgetId: number) => void;
-    };
-  }
-}
+import { useRecaptcha } from '@/hooks/use-recaptcha';
+import { Section, Reveal } from '@/components/Section';
+import Spotlight from '@/components/Spotlight';
+import { socialIcon } from '@/lib/social';
+import { emailFrom, useHero } from '@/lib/content';
+import api from '@/lib/api';
 
 const contactSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required').max(100, 'Name too long'),
-  email: z.string().trim().email('Invalid email address').max(255, 'Email too long'),
-  message: z.string().trim().min(10, 'Message must be at least 10 characters').max(1000, 'Message too long'),
+  name: z.string().trim().min(1, 'Please enter your name').max(100, 'Name is too long'),
+  email: z.string().trim().email('Please enter a valid email').max(255, 'Email is too long'),
+  message: z.string().trim().min(10, 'A little more detail, please (10+ characters)').max(1000, 'Message is too long'),
 });
 
-type ContactFormData = z.infer<typeof contactSchema>;
+type ContactForm = z.infer<typeof contactSchema>;
+const empty: ContactForm = { name: '', email: '', message: '' };
 
 const ContactSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const hero = useHero();
+  const email = emailFrom(hero);
   const { toast } = useToast();
+  const recaptcha = useRecaptcha();
 
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [errors, setErrors] = useState<Partial<ContactFormData>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
-  const recaptchaRef = useRef<HTMLDivElement>(null);
+  const [form, setForm] = useState<ContactForm>(empty);
+  const [errors, setErrors] = useState<Partial<ContactForm>>({});
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [copied, setCopied] = useState(false);
 
-
-  useEffect(() => {
-    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-    if (!siteKey) {
-      console.warn('reCAPTCHA site key not found');
-      return;
-    }
-
-
-    if (window.grecaptcha) {
-      setRecaptchaLoaded(true);
-      return;
-    }
-
-
-    const existingScript = document.querySelector(`script[src*="recaptcha/api.js"]`);
-    if (existingScript) {
-      const checkRecaptcha = () => {
-        if (window.grecaptcha && window.grecaptcha.ready) {
-          setRecaptchaLoaded(true);
-        } else {
-          setTimeout(checkRecaptcha, 100);
-        }
-      };
-      checkRecaptcha();
-      return;
-    }
-
-
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      const checkRecaptcha = () => {
-        if (window.grecaptcha && window.grecaptcha.ready) {
-          setRecaptchaLoaded(true);
-        } else {
-          setTimeout(checkRecaptcha, 100);
-        }
-      };
-      checkRecaptcha();
-    };
-    script.onerror = () => {
-      console.error('Failed to load reCAPTCHA script');
-    };
-    document.head.appendChild(script);
-
-    return () => {
-
-      const scriptToRemove = document.querySelector(`script[src*="recaptcha/api.js?render=${siteKey}"]`);
-      if (scriptToRemove) {
-        scriptToRemove.remove();
-      }
-    };
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: undefined }));
+    setForm((f) => ({ ...f, [name]: value }));
+    setErrors((er) => ({ ...er, [name]: undefined }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${email}`;
+    }
+  };
 
-    const result = contactSchema.safeParse(formData);
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = contactSchema.safeParse(form);
     if (!result.success) {
-      const fieldErrors: Partial<ContactFormData> = {};
+      const fieldErrors: Partial<ContactForm> = {};
       result.error.errors.forEach((err) => {
-        if (err.path[0]) {
-          fieldErrors[err.path[0] as keyof ContactFormData] = err.message;
-        }
+        fieldErrors[err.path[0] as keyof ContactForm] = err.message;
       });
       setErrors(fieldErrors);
       return;
     }
 
-    setIsSubmitting(true);
-
+    setStatus('sending');
     try {
-
-      const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-      let recaptchaToken = '';
-
-      if (siteKey && window.grecaptcha) {
-        try {
-          await new Promise<void>((resolve) => {
-            if (window.grecaptcha.ready) {
-              window.grecaptcha.ready(() => {
-                resolve();
-              });
-            } else {
-
-              setTimeout(() => {
-                if (window.grecaptcha && window.grecaptcha.ready) {
-                  window.grecaptcha.ready(() => resolve());
-                } else {
-                  resolve(); // Continue anyway
-                }
-              }, 500);
-            }
-          });
-
-          recaptchaToken = await window.grecaptcha.execute(siteKey, {
-            action: 'submit',
-          });
-        } catch (recaptchaError: any) {
-          console.warn('reCAPTCHA error (continuing without token):', recaptchaError);
-
-
-          recaptchaToken = '';
-          
-
-          if (recaptchaError?.message?.includes('Invalid site key')) {
-            console.warn('reCAPTCHA site key may be invalid or domain not registered. Form will submit without reCAPTCHA verification.');
-          }
-        }
-      }
-
-
-      const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:3001');
-      const response = await fetch(`${API_URL}/api/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          recaptchaToken,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send message');
-      }
-
-      setIsSubmitted(true);
-      toast({
-        title: 'Message sent!',
-        description: "Thank you for reaching out. I'll get back to you soon!",
-      });
-
-
-      setTimeout(() => {
-        setFormData({ name: '', email: '', message: '' });
-        setIsSubmitted(false);
-      }, 3000);
+      const recaptchaToken = await recaptcha.getToken();
+      await api.post('/contact', { ...result.data, recaptchaToken });
+      setStatus('sent');
+      setForm(empty);
+      toast({ title: 'Message sent', description: "Thanks for reaching out — I'll reply soon." });
+      setTimeout(() => setStatus('idle'), 4000);
     } catch (error) {
-      console.error('Error sending message:', error);
+      setStatus('idle');
+      const message = isAxiosError(error) ? error.response?.data?.error : undefined;
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to send message. Please try again later.',
+        title: "Couldn't send your message",
+        description: message || `Please try again, or email me directly at ${email}.`,
         variant: 'destructive',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
+  const field = (name: keyof ContactForm) => ({
+    id: name,
+    name,
+    value: form[name],
+    onChange,
+    disabled: status === 'sending',
+    'aria-invalid': Boolean(errors[name]),
+    'aria-describedby': errors[name] ? `${name}-error` : undefined,
+  });
+
+  const fieldError = (name: keyof ContactForm) =>
+    errors[name] ? (
+      <p id={`${name}-error`} className="mt-1.5 text-sm text-destructive">
+        {errors[name]}
+      </p>
+    ) : null;
+
   return (
-    <section id="contact" className="section-padding">
-      <div className="container-custom">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            Let's <span className="gradient-text">Connect</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            I'm excited to join a versatile team focused on building impactful applications. 
-            Have a project or vision? Let's collaborate and make it a reality.
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="glass-card rounded-2xl p-8 mb-8">
-              <h3 className="text-2xl font-display font-bold mb-4">
-                Let's Work Together
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                Ready to bring your ideas to life? Drop me a message and I'll get back to you within 24 hours.
-              </p>
-
-              <div className="space-y-4">
-                <motion.a
-                  href="mailto:thakurgaurav273@gmail.com"
-                  whileHover={{ x: 5 }}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">thakurgaurav273@gmail.com</p>
-                  </div>
-                </motion.a>
-              </div>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-center lg:text-left"
+    <Section
+      id="contact"
+      index="04"
+      label="Contact"
+      title={
+        <>
+          Let's build something <em>together</em>
+        </>
+      }
+      intro="Hiring for a full-stack role, or want to talk through a product? Email is the quickest way to reach me, or use the form."
+    >
+      <div className="grid gap-4 lg:grid-cols-12">
+        <Reveal className="lg:col-span-5">
+          <Spotlight className="flex h-full flex-col p-7 md:p-9">
+            <div aria-hidden className="glow pointer-events-none absolute -inset-20 -z-10 opacity-70" />
+            <p className="eyebrow">Email</p>
+            <a
+              href={`mailto:${email}`}
+              className="mt-3 text-xl font-semibold tracking-tight transition-colors [overflow-wrap:anywhere] hover:text-accent sm:text-2xl"
             >
-              <p className="text-muted-foreground text-sm">
-                I typically respond within 24 hours <Clock className="w-4 h-4 inline-block" />
-              </p>
-            </motion.div>
-          </motion.div>
+              {email}
+            </a>
+            <button
+              onClick={copyEmail}
+              className="mt-5 inline-flex h-9 w-fit items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Copy email address"
+            >
+              {copied ? <Check className="h-3.5 w-3.5 text-success" /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? 'Copied!' : 'Copy address'}
+            </button>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-8">
-              <div className="space-y-6">
+            <p className="eyebrow mt-12">Elsewhere</p>
+            <ul className="mt-3 divide-y divide-border border-y border-border">
+              {hero.socialLinks
+                .filter((l) => !l.url.startsWith('mailto:'))
+                .map((link) => {
+                  const Icon = socialIcon(link.platform);
+                  return (
+                    <li key={link.url}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-3 py-3.5 text-[15px] text-foreground/85 transition-colors hover:text-foreground"
+                      >
+                        <Icon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-accent" /> {link.platform}
+                        <ArrowUpRight className="ml-auto h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      </a>
+                    </li>
+                  );
+                })}
+            </ul>
+          </Spotlight>
+        </Reveal>
+
+        <Reveal delay={0.08} className="lg:col-span-7">
+          <Spotlight className="h-full">
+            <form onSubmit={onSubmit} noValidate className="p-7 md:p-9">
+              <p className="eyebrow mb-8">Send a message</p>
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Your name"
-                      className="pl-12 h-12"
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                  {errors.name && (
-                    <p className="text-destructive text-sm mt-1">{errors.name}</p>
-                  )}
+                  <Label htmlFor="name" className="mb-2 block">Name</Label>
+                  <Input {...field('name')} autoComplete="name" placeholder="Jane Doe" className="h-12 rounded-xl bg-background/60" />
+                  {fieldError('name')}
                 </div>
-
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="you@example.com"
-                      className="pl-12 h-12"
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                  {errors.email && (
-                    <p className="text-destructive text-sm mt-1">{errors.email}</p>
-                  )}
+                  <Label htmlFor="email" className="mb-2 block">Email</Label>
+                  <Input {...field('email')} type="email" autoComplete="email" placeholder="jane@company.com" className="h-12 rounded-xl bg-background/60" />
+                  {fieldError('email')}
                 </div>
+              </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Your Message
-                  </label>
-                  <div className="relative">
-                    <MessageSquare className="absolute left-4 top-3 w-5 h-5 text-muted-foreground" />
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell me about your project..."
-                      className="pl-12 min-h-32 resize-none"
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                  {errors.message && (
-                    <p className="text-destructive text-sm mt-1">{errors.message}</p>
-                  )}
-                </div>
+              <div className="mt-6">
+                <Label htmlFor="message" className="mb-2 block">Message</Label>
+                <Textarea {...field('message')} placeholder="What are you working on?" className="min-h-44 resize-y rounded-xl bg-background/60" />
+                {fieldError('message')}
+              </div>
 
-                {import.meta.env.VITE_RECAPTCHA_SITE_KEY && (
-                  <p className="text-xs text-muted-foreground text-center">
-                    This site is protected by reCAPTCHA and the Google{' '}
-                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
-                      Privacy Policy
-                    </a>
-                    {' '}and{' '}
-                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
-                      Terms of Service
-                    </a>
-                    {' '}apply.
+              <div className="mt-8 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+                {recaptcha.enabled ? (
+                  <p className="text-xs text-muted-foreground">
+                    Protected by reCAPTCHA ·{' '}
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="link-underline">Privacy</a>{' '}
+                    ·{' '}
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="link-underline">Terms</a>
                   </p>
+                ) : (
+                  <span />
                 )}
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-primary hover:bg-primary/90 h-12 glow-sm"
-                  disabled={isSubmitting || isSubmitted}
-                >
-                  {isSubmitting ? (
+                <button type="submit" disabled={status !== 'idle'} className="btn-primary h-12 px-7 disabled:opacity-60">
+                  {status === 'sending' ? (
                     <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Sending...
+                      <Loader2 className="h-4 w-4 animate-spin" /> Sending
                     </>
-                  ) : isSubmitted ? (
+                  ) : status === 'sent' ? (
                     <>
-                      <CheckCircle className="w-5 h-5 mr-2" />
-                      Message Sent!
+                      <Check className="h-4 w-4" /> Sent
                     </>
                   ) : (
                     <>
-                      <Send className="w-5 h-5 mr-2" />
-                      Send Message
+                      Send message <ArrowRight className="h-4 w-4" />
                     </>
                   )}
-                </Button>
+                </button>
               </div>
             </form>
-          </motion.div>
-        </div>
+          </Spotlight>
+        </Reveal>
       </div>
-    </section>
+    </Section>
   );
 };
 

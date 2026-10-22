@@ -1,0 +1,1363 @@
+{
+  "hero": {
+    "name": "Gaurav Singh",
+    "subtitle": "Full-stack engineer building *production software* for complex business workflows.",
+    "description": "I work across React, Next.js, TypeScript, Node.js, NestJS and PostgreSQL — currently on an enterprise freight-forwarding platform at Eagle Inbrit, previously on CometChat's React, Angular and Vue UI Kits and SDK integrations.",
+    "socialLinks": [
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/thakurgaurav273"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://linkedin.com/in/thakurgaurav273"
+      },
+      {
+        "platform": "Email",
+        "url": "mailto:thakurgaurav273@gmail.com"
+      }
+    ],
+    "stats": [],
+    "about": [
+      "I've spent the last few years where product UI meets the systems behind it — first on CometChat's developer-facing UI Kits and SDK integrations, now on an enterprise freight-forwarding platform at Eagle Inbrit.",
+      "That mix shapes how I work. I think about the API contract and the data model as much as the component, I build reusable pieces that other developers integrate, and I pay attention to the edge cases in long, rule-heavy business workflows.",
+      "Alongside that I've designed and built full-stack products across construction, hiring, retail and healthcare — working through permissions, multi-tenant data, approval workflows and reporting on Next.js, NestJS and PostgreSQL."
+    ]
+  },
+  "skills": [
+    {
+      "category": "Frontend",
+      "items": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Angular",
+        "Vue",
+        "Ant Design"
+      ],
+      "order": 1
+    },
+    {
+      "category": "Backend",
+      "items": [
+        "Node.js",
+        "NestJS",
+        "Express",
+        "REST APIs"
+      ],
+      "order": 2
+    },
+    {
+      "category": "Mobile",
+      "items": [
+        "React Native",
+        "Ionic",
+        "Capacitor"
+      ],
+      "order": 3
+    },
+    {
+      "category": "Data & infrastructure",
+      "items": [
+        "PostgreSQL",
+        "Prisma",
+        "MongoDB",
+        "Redis",
+        "Docker"
+      ],
+      "order": 4
+    }
+  ],
+  "experience": [
+    {
+      "company": "Eagle Inbrit (Xenage Solutions)",
+      "role": "Software Engineer I",
+      "startDate": "2026-02-01T00:00:00.000Z",
+      "endDate": null,
+      "isCurrent": true,
+      "description": [
+        "Build features for an enterprise freight-forwarding platform supporting Sea FCL and Air Cargo operations.",
+        "Work across RFQs and rate management, quotations and pricing, margins and charge codes, CRM and bookings workflows.",
+        "Develop form-heavy, data-driven interfaces in Next.js, TypeScript and Ant Design that encode business rules and integrate with backend APIs.",
+        "Built reusable frontend modules and API integration layers shared across freight operations workflows."
+      ],
+      "tech": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Ant Design"
+      ],
+      "order": 0
+    },
+    {
+      "company": "CometChat (Inscripts)",
+      "role": "Associate Software Developer",
+      "startDate": "2025-03-01T00:00:00.000Z",
+      "endDate": "2026-02-01T00:00:00.000Z",
+      "isCurrent": false,
+      "description": [
+        "Built and maintained reusable components in CometChat's React, Angular and Vue UI Kits — developer-facing libraries that customers embed to add chat to their own products.",
+        "Worked on stability improvements to the core UI Kit packages to make customer integrations simpler.",
+        "Shipped features in Agile sprints across the three framework kits, keeping behaviour consistent between them."
+      ],
+      "tech": [
+        "React",
+        "Angular",
+        "Vue",
+        "TypeScript"
+      ],
+      "order": 1
+    },
+    {
+      "company": "CometChat (Inscripts)",
+      "role": "Trainee Engineer",
+      "startDate": "2024-03-01T00:00:00.000Z",
+      "endDate": "2025-02-01T00:00:00.000Z",
+      "isCurrent": false,
+      "description": [
+        "Led end-to-end SDK integrations for enterprise customers, including in healthcare and fintech.",
+        "Built a visual workflow automation tool with React Flow and MongoDB.",
+        "Published CapacitorPush, an open-source Capacitor plugin that handles APNs, PushKit VoIP tokens and CallKit integration for native push and calling on iOS and Android.",
+        "Designed reusable integration modules to shorten customer go-live timelines."
+      ],
+      "tech": [
+        "React",
+        "React Flow",
+        "Capacitor",
+        "iOS",
+        "Android"
+      ],
+      "order": 2
+    }
+  ],
+  "projects": [
+    {
+      "title": "Engineering Workspace",
+      "slug": "engineering-workspace",
+      "description": "An internal platform that brings daily check-ins, task updates, OKRs, performance reviews and peer recognition into one workspace, scoped by organisation, team and role.",
+      "tagline": "Check-ins, goals, reviews and recognition for engineering teams.",
+      "headline": "A workspace for engineering organisations to track progress, goals and reviews across teams — without micromanagement.",
+      "subheadline": "Check-ins, goals, reviews, recognition, and personal work in one workspace.",
+      "overview": [
+        "Engineering leadership runs on two questions: what is actually happening this week, and is anyone blocked. The answers are scattered across a project tracker, a standup thread, a goals document nobody has opened since the quarter started, and a review cycle that arrives twice a year with no supporting evidence.",
+        "This workspace collects them. Daily check-ins record progress and blockers. Task updates and personal action items - the follow-ups from Slack, calls, and meetings that never belong in a project tracker - live in each person's workspace. Goals and OKRs run org-wide with progress. Reviews draw on check-ins and recognition that already exist rather than on what a manager can recall.",
+        "The dashboard puts it in one place: check-in rate, blockers today, pending reviews, open goals, recognitions this week, average score, check-in activity over time, goal progress across teams, and top contributors. It is built for product companies and engineering organizations large enough that a manager cannot hold the whole picture in their head."
+      ],
+      "capabilities": [
+        {
+          "icon": "dashboard",
+          "title": "Engineering Dashboard",
+          "description": "Check-in rate, blockers, pending reviews, open goals, recognitions, and average score for the week, with check-in activity and goal progress charted."
+        },
+        {
+          "icon": "workspace",
+          "title": "Personal Workspace",
+          "description": "A private board for reminders, follow-ups, and action items from Slack, email, calls, and meetings, with priority, source, and due-date filters."
+        },
+        {
+          "icon": "checkins",
+          "title": "Daily Check-ins",
+          "description": "Short structured updates on progress and blockers. Blocked items surface on the dashboard the same day rather than at the next standup."
+        },
+        {
+          "icon": "tasks",
+          "title": "Task Updates",
+          "description": "Progress recorded against work in flight, keeping your project tracker as the source of truth while the narrative lives here."
+        },
+        {
+          "icon": "goals",
+          "title": "Goals & OKRs",
+          "description": "Org-wide and team goals with progress states - active, completed, archived - visible to everyone rather than filed away."
+        },
+        {
+          "icon": "reviews",
+          "title": "Performance Reviews",
+          "description": "Review cycles backed by the check-ins, goal progress, and recognition already in the system, so evaluations rest on evidence."
+        },
+        {
+          "icon": "recognition",
+          "title": "Peer Recognition",
+          "description": "Teammates recognize each other's work in a record that feeds reviews and the leaderboard instead of disappearing down a chat channel."
+        },
+        {
+          "icon": "people",
+          "title": "People Directory",
+          "description": "Everyone in the org with role, team, and their check-ins, goals, and recognitions in one profile."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "/projects/eng0ne.png",
+          "alt": "Engineering dashboard with check-in rate, blocked, pending reviews, open goals, recognitions and average score tiles, plus check-in activity and goal progress charts",
+          "label": "Dashboard",
+          "caption": "A weekly snapshot of the org - check-in rate, blockers, pending reviews, open goals, recognitions, average score - with check-in activity, goal progress, and top contributors.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/engone.png",
+          "alt": "Personal workspace board with priority, source, and date filters and quick actions for adding items",
+          "label": "My Workspace",
+          "caption": "Personal action items captured from Slack, WhatsApp, email, calls, and meetings, filtered by priority, source, overdue, and due today. Keyboard-first item creation.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Next.js",
+          "note": "App Router, server components"
+        },
+        {
+          "layer": "Backend",
+          "name": "NestJS",
+          "note": "Modular REST services"
+        },
+        {
+          "layer": "Database",
+          "name": "PostgreSQL",
+          "note": "Relational, transactional"
+        },
+        {
+          "layer": "ORM",
+          "name": "Prisma",
+          "note": "Typed schema and migrations"
+        },
+        {
+          "layer": "Deployment",
+          "name": "Docker",
+          "note": "Reproducible builds"
+        },
+        {
+          "layer": "Hosting",
+          "name": "AWS or self-hosted",
+          "note": "Cloud or on-premise"
+        }
+      ],
+      "builtIn": [
+        "Multi-Org & Multi-Team",
+        "Role-Based Access Control",
+        "Authentication",
+        "Global Search",
+        "Keyboard Shortcuts",
+        "Dark & Light Mode",
+        "Notifications",
+        "CSV Export",
+        "Reports & Analytics",
+        "REST APIs",
+        "Responsive UI",
+        "Docker Ready",
+        "Self Hostable"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Technology",
+      "status": "live",
+      "features": [
+        "Engineering Dashboard",
+        "Personal Workspace",
+        "People Directory",
+        "Daily Check-ins",
+        "Task Updates",
+        "Goals & OKRs",
+        "Performance Reviews",
+        "Peer Recognition",
+        "Leaderboard",
+        "Analytics & Reports"
+      ],
+      "tech": [
+        "Next.js",
+        "NestJS",
+        "PostgreSQL",
+        "Prisma"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611124/portfolio/sxzff3vdeqbxs8h54k1y.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611124/portfolio/sxzff3vdeqbxs8h54k1y.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611135/portfolio/bqkpnhooboxnylasplaa.png",
+          "type": "image"
+        }
+      ],
+      "featured": true,
+      "order": 1,
+      "githubUrl": "",
+      "liveUrl": "",
+      "architecture": [
+        "Multi-organisation data model: organisations contain teams and members, and every check-in, goal, review and recognition is scoped to that hierarchy.",
+        "Role-based access control decides who can see and act on what — a member's private workspace, a manager's team view and org-wide goals each have different visibility rules.",
+        "Reviews draw on records that already exist — check-ins, goal progress, recognition — so the schema links them rather than duplicating them into the review.",
+        "Dashboard metrics (check-in rate, blockers, goal progress, top contributors) are aggregated from the same relational data in PostgreSQL through Prisma.",
+        "NestJS modules follow the product domains — check-ins, goals, reviews, recognition, people — behind a REST API consumed by the Next.js app."
+      ]
+    },
+    {
+      "title": "Construction ERP",
+      "slug": "construction-erp",
+      "description": "Projects, procurement, budgets, materials, workforce and site reporting in one system — so a purchase order, a site report and a budget line all trace back to the same project.",
+      "tagline": "Site-to-office operations in one system.",
+      "headline": "A construction management platform connecting site execution, procurement, budgets and workforce for multi-site firms.",
+      "subheadline": "Projects, procurement, materials, workforce, and finance in one system.",
+      "overview": [
+        "Construction work is coordinated across three places that rarely agree: a site, an office and a supplier's inbox. Purchase orders sit in WhatsApp. Progress lives in a site engineer's notebook. Finance finds out about a cost overrun a month after it happened.",
+        "The platform puts the whole chain in one system. A site engineer files a daily report from a phone, and that report attaches to a project. The project holds its own budget, purchase orders, material requests, workforce allocation and documents. When a PO is raised it moves through the firm's approval chain, and committed cost updates against the project budget the moment it clears.",
+        "It is designed for firms running multiple active sites with a real procurement function — contractors, real estate developers and infrastructure companies — where vendors, RFQs and approvals need to be tracked against each project."
+      ],
+      "capabilities": [
+        {
+          "icon": "projects",
+          "title": "Project Management",
+          "description": "Every project carries its own milestones, timeline, budget, team, and document set. Progress and cost roll up to a portfolio view."
+        },
+        {
+          "icon": "procurement",
+          "title": "Procurement",
+          "description": "RFQs to vendors, quote comparison, purchase orders, and approval routing. Filter the PO register by project, vendor, status, or period."
+        },
+        {
+          "icon": "budget",
+          "title": "Budget Tracking",
+          "description": "Committed and actual cost against each project budget. Monthly procurement value and category-wise spend without a manual reconciliation."
+        },
+        {
+          "icon": "materials",
+          "title": "Materials & Inventory",
+          "description": "Material requests from site, stock held at store and site, issue records, and delivery tracking against each purchase order."
+        },
+        {
+          "icon": "workforce",
+          "title": "Workforce",
+          "description": "Labour and staff allocation per site, attendance capture, and a record of who is deployed where on any given day."
+        },
+        {
+          "icon": "reports",
+          "title": "Daily Site Reports",
+          "description": "Site engineers file progress, manpower, weather, and delays from a phone. Reports attach to the project and reach the office the same day."
+        },
+        {
+          "icon": "documents",
+          "title": "Document Control",
+          "description": "Drawings, contracts, and approvals stored against the project with version history, so nobody builds from a superseded revision."
+        },
+        {
+          "icon": "equipment",
+          "title": "Equipment Tracking",
+          "description": "Asset register, allocation to sites, maintenance schedules, and availability, so plant is not sitting idle on a finished site."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "/projects/constructions.png",
+          "alt": "Construction ERP procurement screen with RFQ and purchase order metrics, filters, and the purchase order register",
+          "label": "Procurement",
+          "caption": "Open RFQs, pending approvals, monthly value, active vendors, and delayed deliveries at the top. The PO register below filters by project, vendor, status, and period.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Next.js",
+          "note": "App Router, server components"
+        },
+        {
+          "layer": "Backend",
+          "name": "NestJS",
+          "note": "Modular REST services"
+        },
+        {
+          "layer": "Database",
+          "name": "PostgreSQL",
+          "note": "Relational, transactional"
+        },
+        {
+          "layer": "Mobile",
+          "name": "React Native",
+          "note": "Site reporting on Android and iOS"
+        },
+        {
+          "layer": "Deployment",
+          "name": "Docker",
+          "note": "Reproducible builds"
+        },
+        {
+          "layer": "Hosting",
+          "name": "AWS or self-hosted",
+          "note": "Cloud or on-premise"
+        }
+      ],
+      "builtIn": [
+        "Role-Based Access Control",
+        "Authentication",
+        "Approval Workflows",
+        "Global Search",
+        "Notifications",
+        "REST APIs",
+        "Audit Trail",
+        "CSV Export",
+        "Reports & Analytics",
+        "Mobile App",
+        "Responsive UI",
+        "Docker Ready",
+        "Self Hostable"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Construction",
+      "status": "live",
+      "features": [
+        "Project Management",
+        "Procurement",
+        "Subcontractor Portal",
+        "Budget Tracking",
+        "Document Control",
+        "Mobile Site Reports",
+        "Equipment Tracking"
+      ],
+      "tech": [
+        "Next.js",
+        "NestJS",
+        "PostgreSQL",
+        "React Native"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785610934/portfolio/h9c9fp3hcsfoxmohti6t.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785610934/portfolio/h9c9fp3hcsfoxmohti6t.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611029/portfolio/bexd3ndormwz1jx8gu5y.png",
+          "type": "image"
+        }
+      ],
+      "featured": true,
+      "order": 2,
+      "githubUrl": "",
+      "liveUrl": "",
+      "architecture": [
+        "The project is the central entity: budgets, purchase orders, material requests, workforce allocation, documents and site reports all hang off it, so cost and progress roll up without manual reconciliation.",
+        "Procurement runs as a workflow — RFQ, quotation comparison, purchase order, approval, delivery — with each transition recorded for the audit trail.",
+        "Approval routing follows each firm's own chain rather than a fixed one, and committed cost updates against the project budget once a purchase order clears.",
+        "Site engineers report from a React Native app; reports attach to the same project records the office works from.",
+        "Role-based access separates site, procurement, finance and admin views. Services are containerised with Docker for cloud or on-premise hosting."
+      ]
+    },
+    {
+      "title": "Talent Management",
+      "slug": "talent-management",
+      "description": "Recruitment teams manage jobs, candidates, interviews, emails, and hiring decisions across spreadsheets, email, LinkedIn, and messaging platforms - leading to poor visibility, manual effort, and inconsistent hiring workflows.",
+      "tagline": "Manage your entire hiring process from job posting to candidate selection.",
+      "headline": "A talent platform that runs hiring end to end, from job posting to offer.",
+      "subheadline": "An applicant tracking system with jobs, candidates, pipeline, interviews, mail, and referrals in one workspace.",
+      "overview": [
+        "Recruitment is a coordination problem disguised as a people problem. The job description lives in a doc, applicants arrive by email, screening notes sit in a spreadsheet, interviews are booked from a personal calendar, and referrals are remembered rather than recorded. Every handoff between those tools is a place where a candidate goes quiet and nobody notices.",
+        "This foundation puts the whole cycle in one system. A job carries its own applications, pipeline, and hiring team. Candidates move through stages on a board, and every move is written to an activity timeline with who did it and when. Recruitment mail is composed and sent from inside the platform, so correspondence stays attached to the candidate instead of one recruiter's inbox. Employee referrals are a first-class record with their own status, not a forwarded CV.",
+        "It is built for HR teams, recruitment agencies, growing startups, and enterprises - anywhere more than one person touches a requisition and leadership eventually asks how the funnel is actually performing. Role and permission management means recruiters, hiring managers, and administrators each see the slice of hiring that belongs to them."
+      ],
+      "capabilities": [
+        {
+          "icon": "dashboard",
+          "title": "Hiring Dashboard",
+          "description": "Open roles, active candidates, upcoming interviews, and recent activity on one screen, so a standup does not require three tabs."
+        },
+        {
+          "icon": "jobs",
+          "title": "Job Management",
+          "description": "Roles with department, location, employment type, openings, and status. Each job holds its own overview, applications, pipeline, and hiring team."
+        },
+        {
+          "icon": "candidates",
+          "title": "Candidate Management",
+          "description": "Applicants with contact details, source, and current stage, searchable and filterable across every open requisition."
+        },
+        {
+          "icon": "pipeline",
+          "title": "Hiring Pipeline",
+          "description": "A drag-and-drop board across applied, screening, shortlisted, interview scheduled, and beyond, with live counts per stage."
+        },
+        {
+          "icon": "interviews",
+          "title": "Interview Management",
+          "description": "Interviews scheduled against a candidate and a job, with panellists assigned and the schedule visible to the whole hiring team."
+        },
+        {
+          "icon": "timeline",
+          "title": "Activity Timeline",
+          "description": "Every stage move, candidate creation, and hiring action recorded with actor and timestamp, browsable by calendar day."
+        },
+        {
+          "icon": "mail",
+          "title": "Recruitment Mail",
+          "description": "Compose and send candidate email from inside the platform - rich text, attachments, Cc and Bcc - so the thread stays on the record."
+        },
+        {
+          "icon": "referrals",
+          "title": "Employee Referrals",
+          "description": "Staff refer from a job board, track their referrals' progress, and see status without asking a recruiter for an update."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "/projects/hiring-pipline.png",
+          "alt": "Hiring pipeline board with applied, screening, shortlisted, and interview scheduled columns and live counts",
+          "label": "Pipeline",
+          "caption": "Stage columns with live counts. Candidates move by drag and drop; search and filters narrow the board to a single job.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/job-list.png",
+          "alt": "Job detail screen showing department, location, openings, employment type, applicants, posted date, status, and hiring team",
+          "label": "Job detail",
+          "caption": "Each role carries department, location, openings, and employment type, with Overview, Applications, and Pipeline tabs and its own hiring team.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/activities.png",
+          "alt": "Activity timeline with a date calendar and a feed of candidate created and candidate moved events with actor and time",
+          "label": "Activity timeline",
+          "caption": "Live events for the selected day - candidate created, candidate moved between stages - each with the actor, the record, and how long ago.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/internal-referrals.png",
+          "alt": "Employee referrals screen listing a referred candidate with role, referral date, and current status",
+          "label": "Referrals",
+          "caption": "Staff refer into open roles and track progress themselves. Each referral shows the role, the date, and the candidate's current stage.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/mails-composing.png",
+          "alt": "Compose mail screen with from, to, Cc, Bcc, subject, rich text body, formatting toolbar, and attachments",
+          "label": "Recruitment mail",
+          "caption": "Candidate email composed in-platform with Cc, Bcc, formatting, links, and attachments - so correspondence stays attached to the hire.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Next.js",
+          "note": "App Router, server components"
+        },
+        {
+          "layer": "Runtime",
+          "name": "Node.js",
+          "note": "TypeScript throughout"
+        },
+        {
+          "layer": "Backend",
+          "name": "Express.js",
+          "note": "Modular REST services"
+        },
+        {
+          "layer": "Database",
+          "name": "PostgreSQL",
+          "note": "Relational, transactional"
+        },
+        {
+          "layer": "Deployment",
+          "name": "Docker",
+          "note": "Reproducible builds"
+        },
+        {
+          "layer": "Hosting",
+          "name": "AWS or self-hosted",
+          "note": "Cloud or on-premise"
+        }
+      ],
+      "builtIn": [
+        "Role & Permission Management",
+        "Authentication",
+        "Kanban Pipeline",
+        "Activity Audit Trail",
+        "Email Composer",
+        "Search & Filters",
+        "Notifications",
+        "Dark & Light Mode",
+        "REST APIs",
+        "Reports & Analytics",
+        "Responsive UI",
+        "Docker Ready",
+        "Self Hostable"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Technology",
+      "status": "live",
+      "features": [
+        "Hiring Dashboard",
+        "Job Management",
+        "Candidate Management",
+        "Hiring Pipeline",
+        "Interview Management",
+        "Activity Timeline",
+        "Recruitment Mail",
+        "Employee Referrals",
+        "Reports & Analytics",
+        "Role & Permission Management"
+      ],
+      "tech": [
+        "Next.js",
+        "Node.js",
+        "Express.js",
+        "PostgreSQL"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611061/portfolio/cwgchwgxlxwpbxfh109c.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611061/portfolio/cwgchwgxlxwpbxfh109c.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611069/portfolio/hqjvxqqqwtx9p0aixkys.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611079/portfolio/gwizzcorstnc9bme8vnt.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611087/portfolio/m0wuohdnjn2i7gqaph6h.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611094/portfolio/rjotmveazlwkeepohis2.png",
+          "type": "image"
+        }
+      ],
+      "featured": false,
+      "order": 3,
+      "githubUrl": "",
+      "liveUrl": "",
+      "architecture": []
+    },
+    {
+      "title": "Inventory Management",
+      "slug": "inventory-management",
+      "description": "Businesses running multiple locations juggle fragmented stock counts, manual billing, and inconsistent GST invoicing - with no single view of what's happening across branches.",
+      "tagline": "Inventory, barcode billing, and GST - unified.",
+      "headline": "An inventory and billing foundation for businesses running more than one location.",
+      "subheadline": "Multi-tenant stock, barcode POS, and GST-compliant invoicing.",
+      "overview": [
+        "Businesses with several shops or warehouses usually end up with several systems. Stock is counted in one place, bills are raised in another, and GST is assembled at the end of the month from whatever the accountant can find. Nobody can answer the simple question - how much of this product do we have, across everything, right now.",
+        "This foundation is multi-tenant from the data model up. Each shop is isolated: its own inventory, products, orders, users, and billing. A super admin switches between them from the header and sees the group. Products carry variants, categories, barcodes, minimum stock levels, units, and prices, and inventory is edited in bulk with barcode printing built in.",
+        "Billing runs off a barcode scanner in three modes - standard, instant, and raw. CGST and SGST are computed on the line items, your GSTIN prints on the bill, discounts are applied at the sale, and cash or UPI/card is recorded against the order. The GST summary is a screen, not a month-end reconstruction."
+      ],
+      "capabilities": [
+        {
+          "icon": "tenant",
+          "title": "Multi-Tenant Shop Management",
+          "description": "Each shop keeps its own inventory, products, orders, and users. A super admin switches between shops and sees the whole group."
+        },
+        {
+          "icon": "inventory",
+          "title": "Inventory Management",
+          "description": "Product, variant, category, SKU, barcode, quantity, minimum stock, unit, and price in one editable table. Bulk edit, bulk delete, bulk barcode printing."
+        },
+        {
+          "icon": "billing",
+          "title": "Barcode-Based Billing",
+          "description": "Scan to add, or search products, variants, and barcodes. Standard, instant, and raw billing modes for different counter workflows."
+        },
+        {
+          "icon": "gst",
+          "title": "GST & Tax Management",
+          "description": "CGST and SGST computed per sale, your GSTIN printed on the bill, and a GST summary screen that stays current instead of being rebuilt monthly."
+        },
+        {
+          "icon": "orders",
+          "title": "Orders",
+          "description": "Every bill becomes an order record with customer, line items, discount, payment mode, and total - searchable after the fact."
+        },
+        {
+          "icon": "refill",
+          "title": "Purchase Orders & Refills",
+          "description": "Refill requests raised against low stock, with minimum-stock levels driving what needs reordering."
+        },
+        {
+          "icon": "users",
+          "title": "User & Role Management",
+          "description": "Super admin, shop admin, and counter staff. Access is scoped to a shop, so staff never see another location's numbers."
+        },
+        {
+          "icon": "analytics",
+          "title": "Analytics & Reports",
+          "description": "Sales, stock movement, and GST reporting per shop and across the group, on a dashboard rather than in a spreadsheet."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "/projects/inventory.png",
+          "alt": "Inventory management screen showing a product table with image, product, variant, category, SKU, barcode, quantity, minimum stock, unit, and price columns",
+          "label": "Inventory",
+          "caption": "The product table with variants, categories, barcodes, stock, units, and prices. Bulk actions for refill requests, deletion, and barcode printing. Shop switcher in the header.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/billing.png",
+          "alt": "Billing POS screen with a barcode scan field, product list, and a current sale panel showing CGST, SGST, discount, payable total, and payment options",
+          "label": "Billing POS",
+          "caption": "Scan a barcode or search the catalog. The current sale panel computes CGST and SGST, applies discounts, records cash or UPI/card, and generates the bill.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Next.js",
+          "note": "Admin and POS interface"
+        },
+        {
+          "layer": "Backend",
+          "name": "NestJS",
+          "note": "Modular REST services"
+        },
+        {
+          "layer": "Database",
+          "name": "PostgreSQL",
+          "note": "Tenant-isolated schema"
+        },
+        {
+          "layer": "ORM",
+          "name": "Prisma",
+          "note": "Typed schema and migrations"
+        },
+        {
+          "layer": "Cache",
+          "name": "Redis",
+          "note": "Sessions and hot lookups"
+        },
+        {
+          "layer": "Monorepo",
+          "name": "Turborepo",
+          "note": "Shared types across apps"
+        },
+        {
+          "layer": "Deployment",
+          "name": "Docker",
+          "note": "Reproducible builds"
+        },
+        {
+          "layer": "Hosting",
+          "name": "AWS or self-hosted",
+          "note": "Cloud or on-premise"
+        }
+      ],
+      "builtIn": [
+        "Multi-Tenant",
+        "Role-Based Access Control",
+        "Authentication",
+        "Barcode Scanning",
+        "Barcode Printing",
+        "GST Invoicing",
+        "Bulk Actions",
+        "Search & Filters",
+        "Pagination",
+        "Notifications",
+        "REST APIs",
+        "Reports & Analytics",
+        "Responsive UI",
+        "Docker Ready",
+        "Self Hostable"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Retail",
+      "status": "live",
+      "features": [
+        "Multi-Tenant Shop Management",
+        "Barcode-Based Billing",
+        "GST & Tax Management",
+        "Purchase Orders & Refills",
+        "Multi-location Stock",
+        "User & Role Management",
+        "Analytics & Reports"
+      ],
+      "tech": [
+        "Next.js",
+        "NestJS",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611162/portfolio/l4oongih479f3lgsv8iu.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611162/portfolio/l4oongih479f3lgsv8iu.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611170/portfolio/wxs2pr2p2lqtfupnnpvw.png",
+          "type": "image"
+        }
+      ],
+      "featured": false,
+      "order": 4,
+      "githubUrl": "",
+      "liveUrl": "",
+      "architecture": []
+    },
+    {
+      "title": "WhatsApp Clone",
+      "slug": "whatsapp-clone",
+      "description": "A cross-platform messaging app for Web, Android, and iOS using Ionic React and CometChat SDK, with a reusable Capacitor push notification plugin.",
+      "tagline": "One messaging codebase, three platforms.",
+      "headline": "A full messaging client for web, Android, and iOS built from a single Ionic React codebase.",
+      "subheadline": "Real-time chat, VoIP calling, reactions, and threaded replies — with the push-notification layer extracted into a Capacitor plugin published on npm.",
+      "overview": [
+        "Messaging looks simple until you ship it to three platforms at once. A browser tab, an Android device, and an iPhone each want a different notification mechanism, a different permission prompt, and a different idea of what happens when a call arrives while the app is closed. Most of the work in a chat client is not the chat.",
+        "This app puts the whole surface in one Ionic React codebase and leans on the CometChat SDK for the real-time layer — one-to-one and group conversations, reactions, threaded replies, status updates, and VoIP calls. Capacitor wraps it for the two mobile stores so the same components render natively rather than in a compatibility shim.",
+        "The notification handling turned out to be the reusable part. Registering FCM tokens on Android, APNs on iOS, and separate VoIP tokens for incoming calls is the same dance in every Capacitor app, so it was pulled out into its own plugin and published to npm rather than left buried in this project."
+      ],
+      "capabilities": [
+        {
+          "icon": "messaging",
+          "title": "Real-time messaging",
+          "description": "One-to-one and group conversations over the CometChat SDK, with delivery and read state reflected in the chat list."
+        },
+        {
+          "icon": "booking",
+          "title": "VoIP calling",
+          "description": "Voice and video calls with incoming-call handling that works when the app is backgrounded or closed."
+        },
+        {
+          "icon": "mail",
+          "title": "Push notifications",
+          "description": "Automated token handling across FCM, APNs, and VoIP tokens, so a device is registered for the right transport on the right platform."
+        },
+        {
+          "icon": "reviews",
+          "title": "Reactions & threads",
+          "description": "Emoji reactions and threaded replies on any message, plus deletion state rendered inline in the conversation."
+        },
+        {
+          "icon": "people",
+          "title": "Status updates",
+          "description": "Presence and status shown against each contact in the chat list and conversation header."
+        },
+        {
+          "icon": "workspace",
+          "title": "Published Capacitor plugin",
+          "description": "The push-notification layer extracted as a standalone Capacitor plugin and released on npm for public use."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1780780268/portfolio/f7v0nmg3gwti6wpz1xu9.png",
+          "alt": "Messaging client with a chat list on the left and an open conversation showing calls, reactions, and a deleted message",
+          "label": "Conversation",
+          "caption": "The chat list holds recent conversations with presence and last-message preview. The open thread shows call events, emoji reactions, threaded replies, and deleted-message state inline.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Ionic React",
+          "note": "Shared components across web and mobile"
+        },
+        {
+          "layer": "Language",
+          "name": "TypeScript",
+          "note": "Typed throughout"
+        },
+        {
+          "layer": "Mobile",
+          "name": "Capacitor",
+          "note": "Native builds for Android and iOS"
+        },
+        {
+          "layer": "Realtime",
+          "name": "CometChat SDK",
+          "note": "Messaging, presence, and calling"
+        },
+        {
+          "layer": "Notifications",
+          "name": "FCM & APNs",
+          "note": "Push and VoIP token handling"
+        }
+      ],
+      "builtIn": [
+        "Real-Time Messaging",
+        "Group Chat",
+        "VoIP Calling",
+        "Push Notifications",
+        "Reactions",
+        "Threaded Replies",
+        "Status Updates",
+        "Cross-Platform Builds",
+        "Published npm Plugin"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Messaging",
+      "status": "live",
+      "features": [
+        "Real-time VOIP calls and push notifications",
+        "Automated push notification handling with FCM, iOS, and VoIP tokens",
+        "Reactions, threaded replies, and status updates",
+        "Seamless cross-platform experience",
+        "Published Capacitor plugin on npm for public use"
+      ],
+      "tech": [
+        "Ionic React",
+        "Capacitor",
+        "TypeScript",
+        "CometChat SDK",
+        "iOS",
+        "Android"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1780780268/portfolio/f7v0nmg3gwti6wpz1xu9.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1780780268/portfolio/f7v0nmg3gwti6wpz1xu9.png",
+          "type": "image"
+        }
+      ],
+      "featured": false,
+      "link": "https://whatsapp-9hmt.onrender.com",
+      "order": 5,
+      "githubUrl": "",
+      "liveUrl": "https://whatsapp-9hmt.onrender.com",
+      "architecture": []
+    },
+    {
+      "title": "Clinic Management",
+      "slug": "clinic-management",
+      "description": "Clinic websites collect enquiries that go nowhere. Doctors and admins share one login with no clear ownership of a request, and every homepage or services update needs a developer.",
+      "tagline": "Website enquiries to patient records, connected.",
+      "headline": "A clinic platform that connects your public website to the people who answer enquiries.",
+      "subheadline": "Website content, patient enquiries, doctors, and records in one admin.",
+      "overview": [
+        "Most clinic software treats the website and the clinic as two different problems. The website is built by an agency and frozen the day it launches. The enquiry form emails a shared inbox. Nobody owns a request, two people call the same patient, and changing the services list means raising a ticket with whoever built the site.",
+        "This foundation makes the website part of the system. Homepage copy, the services catalog, doctor profiles, testimonials, and the statistics strip are edited by your admin from the same panel that manages patient enquiries. An enquiry arrives with the service the patient asked about, gets assigned to a doctor, and moves through New, Viewed, and Completed - so at any moment you can see what came in today and who has not been called back.",
+        "It fits multi-location clinics, specialty practices, and telehealth providers: organizations where more than one person handles enquiries, and where the marketing site changes more than once a year."
+      ],
+      "capabilities": [
+        {
+          "icon": "content",
+          "title": "Website Content Management",
+          "description": "Hero, about page, services, testimonials, footer, and the statistics strip edited from the admin. Counts refresh from the database - no developer required."
+        },
+        {
+          "icon": "enquiry",
+          "title": "Patient Enquiry Requests",
+          "description": "Every website enquiry lands as a record with the patient, mobile number, service requested, and message. Nothing gets lost in a shared inbox."
+        },
+        {
+          "icon": "filters",
+          "title": "Query Management & Filters",
+          "description": "Filter enquiries by status, assigned doctor, service category, patient gender, age bracket, and date range. Bulk select and act on what matters today."
+        },
+        {
+          "icon": "doctors",
+          "title": "Doctor Management",
+          "description": "Doctor profiles, specializations, and availability. Profiles publish straight to the public website; assignment routes enquiries to the right clinician."
+        },
+        {
+          "icon": "patients",
+          "title": "Patient Records",
+          "description": "Patient details, contact history, and the enquiries and consultations attached to each person over time."
+        },
+        {
+          "icon": "services",
+          "title": "Service Catalog",
+          "description": "Services with descriptions, perks, and booking numbers. One edit updates the public site and the categories used to classify enquiries."
+        },
+        {
+          "icon": "portals",
+          "title": "Doctor & Admin Portals",
+          "description": "Separate logins with separate views. Admins see everything; doctors see the patients and enquiries assigned to them."
+        },
+        {
+          "icon": "dashboard",
+          "title": "Dashboard",
+          "description": "Enquiry volume, status breakdown, and doctor workload for the current period on one screen."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "/projects/healthcare-admin.png",
+          "alt": "Clinic admin queries screen with a filters panel open showing status, assigned doctor, service category, gender, age bracket, and date filters",
+          "label": "Enquiries",
+          "caption": "Patient enquiries with status, assigned doctor, service, gender, age bracket, and created-date filters. Bulk selection for triage.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/healthcare.png",
+          "alt": "Clinic admin content management screen with editable cards for hero, about page, services, footer, testimonials, and statistics",
+          "label": "Content management",
+          "caption": "Website sections as editable cards - hero and homepage, about page, services, footer and brand, testimonials, statistics strip. Counts refresh from the live database.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Next.js",
+          "note": "Public site and admin panel"
+        },
+        {
+          "layer": "Backend",
+          "name": "NestJS",
+          "note": "Modular REST services"
+        },
+        {
+          "layer": "Database",
+          "name": "PostgreSQL",
+          "note": "Relational, transactional"
+        },
+        {
+          "layer": "ORM",
+          "name": "Prisma",
+          "note": "Typed schema and migrations"
+        },
+        {
+          "layer": "Deployment",
+          "name": "Docker",
+          "note": "Reproducible builds"
+        },
+        {
+          "layer": "Hosting",
+          "name": "AWS or self-hosted",
+          "note": "Cloud or on-premise"
+        }
+      ],
+      "builtIn": [
+        "Role-Based Access Control",
+        "Authentication",
+        "Multi-Location",
+        "Content Management",
+        "Advanced Filters",
+        "Enquiry Status Workflow",
+        "Bulk Actions",
+        "REST APIs",
+        "Notifications",
+        "SEO-Ready Public Site",
+        "Responsive UI",
+        "Docker Ready",
+        "Self Hostable"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Healthcare",
+      "status": "live",
+      "features": [
+        "Website Content Management",
+        "Patient Enquiry Requests",
+        "Query Management & Filters",
+        "Patient Records",
+        "Doctor Management",
+        "Doctor & Admin Portals",
+        "Service Catalog"
+      ],
+      "tech": [
+        "Next.js",
+        "NestJS",
+        "PostgreSQL",
+        "Prisma"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611185/portfolio/rxgehwie7wksxftffr5d.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611185/portfolio/rxgehwie7wksxftffr5d.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611192/portfolio/a0iiyj6b0rl4hw4yykfa.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611311/portfolio/nwxyrg0ptax9sgelxghg.png",
+          "type": "image"
+        }
+      ],
+      "featured": false,
+      "order": 6,
+      "githubUrl": "",
+      "liveUrl": "",
+      "architecture": []
+    },
+    {
+      "title": "E-Commerce Platform",
+      "slug": "ecommerce-platform",
+      "description": "Retail and D2C teams stitch together a storefront, checkout, and staff permissions from separate tools - product data drifts out of sync, checkout breaks under load, and support can't see what the customer sees.",
+      "tagline": "Storefront, checkout, and admin - one platform.",
+      "headline": "A commerce foundation with a storefront, checkout, and staff admin in one codebase.",
+      "subheadline": "Catalog, cart, orders, and a full admin with audit logs.",
+      "overview": [
+        "The usual way to launch a store is to rent a platform and pay for every gap in it. A theme here, an app for reviews, another for coupons, a per-seat fee for staff accounts, and a transaction cut forever. It works until your catalog or your workflow stops looking like everyone else's, and then you are extending someone else's product from the outside.",
+        "This foundation is the whole thing in one codebase you own. The storefront handles category browsing, search, wishlist, accounts, and cart-to-checkout. The admin behind it manages products with variants and statuses, orders, customers, coupons, reviews, categories, and homepage banners - with audit logs recording who changed what.",
+        "It suits D2C brands, multi-category storefronts, and marketplace operators who expect to customize pricing rules, checkout, or fulfilment, and who would rather pay for engineering once than pay a percentage of revenue indefinitely."
+      ],
+      "capabilities": [
+        {
+          "icon": "catalog",
+          "title": "Product Catalog & Filters",
+          "description": "Products with brands, variants, categories, pricing, and active or inactive status. Category landing pages and collections on the storefront."
+        },
+        {
+          "icon": "cart",
+          "title": "Cart & Checkout",
+          "description": "Cart, wishlist, customer accounts, and a checkout flow built to hold up under load rather than to demo well."
+        },
+        {
+          "icon": "search",
+          "title": "AI Search Assistant",
+          "description": "Natural-language product search for customers who describe what they want instead of guessing your category names."
+        },
+        {
+          "icon": "orders",
+          "title": "Order Management",
+          "description": "Orders with line items, customer, status, and history. Support sees exactly what the customer sees."
+        },
+        {
+          "icon": "customers",
+          "title": "Customers",
+          "description": "Customer records with order history and account details, so repeat buyers are visible rather than anonymous rows."
+        },
+        {
+          "icon": "coupons",
+          "title": "Coupons & Promotions",
+          "description": "Discount codes and promotional rules managed from the admin, without a developer or a third-party app."
+        },
+        {
+          "icon": "reviews",
+          "title": "Customer Reviews",
+          "description": "Product reviews with moderation, so the ratings on your storefront come from your own data."
+        },
+        {
+          "icon": "rbac",
+          "title": "Role-Based Access & Audit Logs",
+          "description": "Staff roles with scoped permissions, and an audit log recording who changed a price, a product, or an order."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "/projects/admin-commerce.png",
+          "alt": "E-commerce admin products screen with a searchable table of products showing brand, variant count, category, status, and price",
+          "label": "Admin",
+          "caption": "Catalog management with variants, categories, status, and price. The sidebar covers orders, customers, coupons, reviews, categories, banners, and audit logs.",
+          "orientation": "desktop"
+        },
+        {
+          "url": "/projects/e-commerce.png",
+          "alt": "E-commerce storefront category browsing page with product search, wishlist, account, and cart in the header",
+          "label": "Storefront",
+          "caption": "Category browsing with search, wishlist, account, and cart. Collections and new arrivals are managed from the same admin.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "Next.js",
+          "note": "Storefront and admin"
+        },
+        {
+          "layer": "Backend",
+          "name": "NestJS",
+          "note": "Modular REST services"
+        },
+        {
+          "layer": "Database",
+          "name": "PostgreSQL",
+          "note": "Relational, transactional"
+        },
+        {
+          "layer": "Cache",
+          "name": "Redis",
+          "note": "Sessions, carts, hot catalog reads"
+        },
+        {
+          "layer": "Deployment",
+          "name": "Docker",
+          "note": "Reproducible builds"
+        },
+        {
+          "layer": "Hosting",
+          "name": "AWS or self-hosted",
+          "note": "Cloud or on-premise"
+        }
+      ],
+      "builtIn": [
+        "Role-Based Access Control",
+        "Authentication",
+        "Audit Logs",
+        "Product Variants",
+        "AI Search",
+        "Coupons & Promotions",
+        "Reviews & Moderation",
+        "Banner Management",
+        "Search & Filters",
+        "REST APIs",
+        "SEO-Ready Storefront",
+        "Responsive UI",
+        "Docker Ready",
+        "Self Hostable"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Retail",
+      "status": "live",
+      "features": [
+        "Role-Based Access Control",
+        "Product Catalog & Filters",
+        "Cart & Checkout",
+        "AI Search Assistant",
+        "Order Management",
+        "Coupons & Promotions",
+        "Customer Reviews"
+      ],
+      "tech": [
+        "Next.js",
+        "NestJS",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611210/portfolio/nma4crijmavmbtgoyrf1.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611210/portfolio/nma4crijmavmbtgoyrf1.png",
+          "type": "image"
+        },
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1785611221/portfolio/ey1l1xit1rnc2oyackw7.png",
+          "type": "image"
+        }
+      ],
+      "featured": false,
+      "order": 7,
+      "githubUrl": "",
+      "liveUrl": "",
+      "architecture": []
+    },
+    {
+      "title": "BEPL — Babu Erectors",
+      "slug": "bepl",
+      "description": "Corporate website for Babu Erectors Pvt. Ltd., a structural steel erection and heavy engineering contractor, built with an animated 3D-accented front end.",
+      "tagline": "A corporate site for a structural steel contractor.",
+      "headline": "Marketing site for a four-decade-old structural steel erection and heavy engineering contractor.",
+      "subheadline": "Services, project record, careers, and enquiries presented for an industrial buyer — with motion and 3D used to carry weight, not decorate.",
+      "overview": [
+        "Industrial contractors are usually sold on credentials: how long you have operated, what you have erected, and whether you can be trusted on a live site. The brief here was to present four decades of structural steel erection work to that audience without the site feeling like a brochure from the same era.",
+        "The build pairs a conventional marketing structure — services, project record, careers, contact — with a motion layer that keeps the pages moving under scroll. Framer Motion drives the section reveals and Three.js carries the geometric accents behind the hero, tuned to sit behind the content rather than compete with it.",
+        "Credibility markers do the selling: ISO certification, years in operation, and a counted record of completed projects, clients, and installations sit high on the page where an industrial buyer looks for them first."
+      ],
+      "capabilities": [
+        {
+          "icon": "content",
+          "title": "Service presentation",
+          "description": "Structural steel erection, equipment installation, and heavy engineering services laid out for a buyer comparing contractors."
+        },
+        {
+          "icon": "projects",
+          "title": "Project record",
+          "description": "Completed work presented as a credential — counted, categorised, and placed where a prospective client looks first."
+        },
+        {
+          "icon": "analytics",
+          "title": "Credibility metrics",
+          "description": "Years in operation, clients served, and installations completed surfaced as headline figures on the landing page."
+        },
+        {
+          "icon": "people",
+          "title": "Careers",
+          "description": "An openings section so site and engineering hiring runs through the same domain as the sales pitch."
+        },
+        {
+          "icon": "enquiry",
+          "title": "Enquiry capture",
+          "description": "Contact and get-in-touch routes threaded through the page so an interested visitor never has to hunt for them."
+        },
+        {
+          "icon": "dashboard",
+          "title": "Motion & 3D layer",
+          "description": "Framer Motion section reveals with Three.js geometry behind the hero, kept subtle enough to read as craft rather than noise."
+        }
+      ],
+      "screenshots": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1780780342/portfolio/oaq0ucxtvswcxori0szm.png",
+          "alt": "Construction contractor landing page with a steel erection hero image, headline, calls to action, and a metrics row",
+          "label": "Landing page",
+          "caption": "The hero states the positioning over a live erection site, with ISO certification and founding year called out above it. The metrics row beneath counts years, clients, projects, and installations.",
+          "orientation": "desktop"
+        }
+      ],
+      "stack": [
+        {
+          "layer": "Frontend",
+          "name": "React",
+          "note": "Component-driven pages"
+        },
+        {
+          "layer": "Styling",
+          "name": "Tailwind CSS",
+          "note": "Utility-first design system"
+        },
+        {
+          "layer": "Components",
+          "name": "shadcn/ui",
+          "note": "Accessible primitives"
+        },
+        {
+          "layer": "Motion",
+          "name": "Framer Motion",
+          "note": "Scroll-triggered section reveals"
+        },
+        {
+          "layer": "3D",
+          "name": "Three.js",
+          "note": "Geometric hero accents"
+        },
+        {
+          "layer": "Backend",
+          "name": "Node.js",
+          "note": "Enquiry handling"
+        }
+      ],
+      "builtIn": [
+        "Responsive UI",
+        "Scroll Animations",
+        "3D Accents",
+        "Enquiry Form",
+        "Careers Section",
+        "SEO Metadata"
+      ],
+      "role": "",
+      "timeline": "",
+      "category": "Construction",
+      "status": "live",
+      "features": [
+        "Service and capability presentation for industrial buyers",
+        "Counted project, client, and installation record",
+        "Careers and enquiry capture",
+        "Framer Motion scroll reveals with Three.js hero accents"
+      ],
+      "tech": [
+        "React.js",
+        "Node.js",
+        "Tailwind CSS",
+        "Shadcn UI",
+        "Three.js",
+        "Framer Motion"
+      ],
+      "image": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1780780342/portfolio/oaq0ucxtvswcxori0szm.png",
+      "media": [
+        {
+          "url": "https://res.cloudinary.com/do6d6lbjy/image/upload/v1780780342/portfolio/oaq0ucxtvswcxori0szm.png",
+          "type": "image"
+        }
+      ],
+      "featured": false,
+      "link": "https://bepl.netlify.app",
+      "order": 8,
+      "githubUrl": "",
+      "liveUrl": "https://bepl.netlify.app",
+      "architecture": []
+    }
+  ]
+}

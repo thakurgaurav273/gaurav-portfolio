@@ -4,11 +4,6 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
-
-if (import.meta.env.DEV) {
-  api.defaults.baseURL = 'http://localhost:3000/api';
-}
-
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('adminToken');
   if (token) {

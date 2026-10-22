@@ -20,7 +20,7 @@ export const AdminSidebar = () => {
   return (
     <aside className="w-64 bg-background border-r border-border min-h-screen flex flex-col fixed left-0 top-0">
       <div className="p-6">
-        <h2 className="text-2xl font-bold gradient-text">Portfolio CMS</h2>
+        <h2 className="text-2xl font-bold">Portfolio CMS</h2>
       </div>
 
       <nav className="flex-1 px-4 space-y-2">
