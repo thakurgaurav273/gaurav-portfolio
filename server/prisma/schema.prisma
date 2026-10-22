@@ -26,6 +26,7 @@ model Hero {
   about       String[] // About-section paragraphs
   socialLinks Json     @default("[]") // [{ platform, url }]
   stats       Json     @default("[]") // [{ value, label }]
+  sections    Json     @default("{}") // { projects | experience | about | contact: { label, title, intro } }
   updatedAt   DateTime @updatedAt
 }
 
@@ -82,4 +83,21 @@ model Skill {
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Accepted contact-form messages. Used for rate limiting (works across serverless
+// instances) and as a backup if an email fails. IPs are stored hashed, never raw.
+model ContactSubmission {
+  id               String   @id @default(cuid())
+  name             String
+  email            String
+  message          String
+  ipHash           String
+  emailSent        Boolean  @default(false)
+  confirmationSent Boolean  @default(false)
+  createdAt        DateTime @default(now())
+
+  @@index([ipHash, createdAt])
+  @@index([email, createdAt])
+  @@index([createdAt])
 }

@@ -80,15 +80,16 @@ export default function ManageSkills() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold">Manage Skills</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Skills</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Groups of skills shown as cards in the About section.</p>
         </div>
         
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button onClick={openCreateDialog}>
-              <Plus className="w-4 h-4 mr-2" /> Add Category
+              <Plus className="w-4 h-4" /> Add group
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -124,18 +125,18 @@ export default function ManageSkills() {
 
       <div className="grid gap-4">
         {skills?.map((skill: any) => (
-          <Card key={skill.id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
+          <Card key={skill.id} className="overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between p-5">
               <div>
-                <CardTitle>{skill.category}</CardTitle>
+                <CardTitle className="text-base">{skill.category}</CardTitle>
                 <p className="text-sm text-muted-foreground">{skill.items?.join(', ')}</p>
               </div>
-              <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="flex gap-1">
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={() => openEditDialog(skill)}
-                  className="text-primary hover:bg-primary/10 hover:text-primary transition-colors"
+                  aria-label="Edit"
                 >
                   <Edit2 className="w-4 h-4" />
                 </Button>
@@ -143,7 +144,7 @@ export default function ManageSkills() {
                   variant="ghost" 
                   size="icon" 
                   onClick={() => deleteMutation.mutate(skill.id)}
-                  className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  aria-label="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>

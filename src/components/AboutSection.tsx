@@ -23,16 +23,7 @@ const AboutSection = () => {
   ].slice(0, 3);
 
   return (
-    <Section
-      id="about"
-      index="03"
-      label="About"
-      title={
-        <>
-          Interfaces, APIs and the <em>data</em> in between
-        </>
-      }
-    >
+    <Section id="about" index="03">
       {/* Bento grid: story, profile, numbers and the toolbox. */}
       <div className="grid gap-3 md:grid-cols-6">
         <Reveal className="md:col-span-4">

@@ -16,6 +16,7 @@ const ResetPassword = lazy(() => import("./pages/admin/ResetPassword"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const ManageHero = lazy(() => import("./pages/admin/ManageHero"));
 const ManageProjects = lazy(() => import("./pages/admin/ManageProjects"));
+const ProjectEditor = lazy(() => import("./pages/admin/ProjectEditor"));
 const ManageExperience = lazy(() => import("./pages/admin/ManageExperience"));
 const ManageSkills = lazy(() => import("./pages/admin/ManageSkills"));
 const AdminLayout = lazy(() => import("./components/admin/AdminLayout").then((m) => ({ default: m.AdminLayout })));
@@ -46,6 +47,8 @@ const App = () => (
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="hero" element={<ManageHero />} />
               <Route path="projects" element={<ManageProjects />} />
+              <Route path="projects/new" element={<ProjectEditor />} />
+              <Route path="projects/:id" element={<ProjectEditor />} />
               <Route path="experience" element={<ManageExperience />} />
               <Route path="skills" element={<ManageSkills />} />
             </Route>

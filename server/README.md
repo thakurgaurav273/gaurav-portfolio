@@ -9,7 +9,7 @@ Data lives in PostgreSQL (Neon in production) and is accessed through Prisma.
 npm install                 # also runs `prisma generate`
 cp .env.example .env        # fill in DATABASE_URL / DIRECT_URL and the rest
 npm run db:deploy           # apply migrations
-ADMIN_EMAIL=you@example.com ADMIN_PASSWORD=... npm run db:seed
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='…' npm run admin:create
 npm run dev                 # http://localhost:3001
 ```
 
@@ -36,7 +36,7 @@ Create a `portfolio` database on that server and point `DATABASE_URL` at `/portf
 | `npm run dev` | Start the API with file watching |
 | `npm run db:migrate` | Create and apply a migration after editing `prisma/schema.prisma` |
 | `npm run db:deploy` | Apply pending migrations (use in CI / production) |
-| `npm run db:seed` | Load `prisma/seed-data.json` into empty tables; add `-- --reset` to replace content |
+| `npm run admin:create` | Create an admin login (or reset its password) from `ADMIN_EMAIL` / `ADMIN_PASSWORD` |
 | `npm run db:studio` | Browse the database in Prisma Studio |
 
 ## API
@@ -48,7 +48,8 @@ Public:
 - `GET /api/content/projects` · `GET /api/content/projects/:slug`
 - `GET /api/content/experience`
 - `GET /api/content/skills`
-- `POST /api/contact` — `{ name, email, message, recaptchaToken? }`
+- `GET /api/health/db`: wakes the database; pinged on a schedule to keep Neon from sleeping
+- `POST /api/contact`: `{ name, email, message, website, elapsedMs, recaptchaToken? }`, rate limited
 
 Admin (Bearer token from `POST /api/auth/login`):
 

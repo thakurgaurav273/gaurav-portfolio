@@ -109,9 +109,17 @@ const HeroSection = () => {
                   )}
                 </p>
               </div>
-              <h1 className="display mt-7 text-[36px] sm:text-[44px] lg:text-[52px]">
-                <Emphasis text={hero.subtitle} />
-              </h1>
+              {hero.subtitle ? (
+                <h1 className="display mt-7 text-[36px] sm:text-[44px] lg:text-[52px]">
+                  <Emphasis text={hero.subtitle} />
+                </h1>
+              ) : (
+                // Waiting on the API (a sleeping database can take a few seconds to wake).
+                <div aria-hidden className="mt-7 space-y-3">
+                  <div className="h-11 w-full animate-pulse rounded-lg bg-foreground/[0.07]" />
+                  <div className="h-11 w-3/4 animate-pulse rounded-lg bg-foreground/[0.07]" />
+                </div>
+              )}
             </Reveal>
 
             <Reveal delay={0.1}>

@@ -17,17 +17,7 @@ const ExperienceSection = () => {
   const groups = groupByCompany(sorted);
 
   return (
-    <Section
-      id="experience"
-      index="02"
-      label="Experience"
-      tone="tint"
-      title={
-        <>
-          From SDKs to <em>enterprise</em> platforms
-        </>
-      }
-    >
+    <Section id="experience" index="02" tone="tint">
       {/* Timeline: a vertical rail with a node per company; the current one is filled. */}
       <ol className="relative space-y-4 before:absolute before:bottom-2 before:left-[7px] before:top-2 before:w-px before:bg-border ">
         {groups.map((group, i) => {

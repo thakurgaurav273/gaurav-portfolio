@@ -14,7 +14,7 @@ export default function ManageExperience() {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ company: '', role: '', startDate: '', endDate: '', isCurrent: false, description: '' });
+  const [formData, setFormData] = useState({ company: '', role: '', location: '', startDate: '', endDate: '', isCurrent: false, description: '', tech: '' });
 
   const { data: experience, isLoading } = useQuery({
     queryKey: ['admin-experience'],
@@ -27,7 +27,7 @@ export default function ManageExperience() {
       queryClient.invalidateQueries({ queryKey: ['admin-experience'] });
       toast.success('Experience added');
       setIsOpen(false);
-      setFormData({ company: '', role: '', startDate: '', endDate: '', isCurrent: false, description: '' });
+      setFormData({ company: '', role: '', location: '', startDate: '', endDate: '', isCurrent: false, description: '', tech: '' });
       setEditingId(null);
     }
   });
@@ -38,7 +38,7 @@ export default function ManageExperience() {
       queryClient.invalidateQueries({ queryKey: ['admin-experience'] });
       toast.success('Experience updated');
       setIsOpen(false);
-      setFormData({ company: '', role: '', startDate: '', endDate: '', isCurrent: false, description: '' });
+      setFormData({ company: '', role: '', location: '', startDate: '', endDate: '', isCurrent: false, description: '', tech: '' });
       setEditingId(null);
     }
   });
@@ -59,7 +59,9 @@ export default function ManageExperience() {
       startDate: new Date(formData.startDate),
       endDate: formData.isCurrent ? null : new Date(formData.endDate),
       isCurrent: formData.isCurrent,
-      description: formData.description.split('\n').map(i => i.trim()).filter(Boolean)
+      location: formData.location,
+      description: formData.description.split('\n').map(i => i.trim()).filter(Boolean),
+      tech: formData.tech.split(',').map(i => i.trim()).filter(Boolean)
     };
 
     if (editingId) {
@@ -71,7 +73,7 @@ export default function ManageExperience() {
 
   const openCreateDialog = () => {
     setEditingId(null);
-    setFormData({ company: '', role: '', startDate: '', endDate: '', isCurrent: false, description: '' });
+    setFormData({ company: '', role: '', location: '', startDate: '', endDate: '', isCurrent: false, description: '', tech: '' });
     setIsOpen(true);
   };
 
@@ -80,10 +82,12 @@ export default function ManageExperience() {
     setFormData({ 
       company: exp.company, 
       role: exp.role, 
+      location: exp.location || '',
       startDate: exp.startDate ? new Date(exp.startDate).toISOString().slice(0, 7) : '', 
       endDate: exp.endDate ? new Date(exp.endDate).toISOString().slice(0, 7) : '',
       isCurrent: exp.isCurrent || false,
-      description: exp.description?.join('\n') || '' 
+      description: exp.description?.join('\n') || '',
+      tech: exp.tech?.join(', ') || ''
     });
     setIsOpen(true);
   };
@@ -102,18 +106,19 @@ export default function ManageExperience() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold">Manage Experience</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Experience</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Jobs in the timeline. Roles at the same company are grouped together on the site.</p>
         </div>
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button onClick={openCreateDialog}>
-              <Plus className="w-4 h-4 mr-2" /> Add Role
+              <Plus className="w-4 h-4" /> Add role
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingId ? 'Edit Experience' : 'Add Experience'}</DialogTitle>
             </DialogHeader>
@@ -125,6 +130,10 @@ export default function ManageExperience() {
               <div className="space-y-2">
                 <Label htmlFor="role">Role</Label>
                 <Input id="role" value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value })} required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="location">Location (optional)</Label>
+                <Input id="location" placeholder="Remote, Gurugram" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -150,7 +159,11 @@ export default function ManageExperience() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Description (new line for each bullet point)</Label>
-                <Textarea id="description" rows={4} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} required />
+                <Textarea id="description" rows={6} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="tech">Tech used (comma separated)</Label>
+                <Input id="tech" placeholder="Next.js, TypeScript" value={formData.tech} onChange={(e) => setFormData({ ...formData, tech: e.target.value })} />
               </div>
               <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending} className="w-full">
                 {createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Experience'}
@@ -160,20 +173,20 @@ export default function ManageExperience() {
         </Dialog>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {sortedExperience?.map((exp: any) => (
-          <Card key={exp.id} className="group overflow-hidden border-border/50 hover:border-border transition-colors">
+          <Card key={exp.id} className="overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between p-5">
               <div>
-                <CardTitle>{exp.company} - {exp.role}</CardTitle>
+                <CardTitle className="text-base">{exp.role}, {exp.company}</CardTitle>
                 <p className="text-sm text-muted-foreground">{formatPeriod(exp.startDate, exp.endDate, exp.isCurrent)}</p>
               </div>
-              <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="flex gap-1">
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={() => openEditDialog(exp)}
-                  className="text-primary hover:bg-primary/10 hover:text-primary transition-colors"
+                  aria-label="Edit"
                 >
                   <Edit2 className="w-4 h-4" />
                 </Button>
@@ -181,7 +194,7 @@ export default function ManageExperience() {
                   variant="ghost" 
                   size="icon" 
                   onClick={() => deleteMutation.mutate(exp.id)}
-                  className="text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  aria-label="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>

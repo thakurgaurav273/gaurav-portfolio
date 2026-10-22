@@ -1,6 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import Emphasis from '@/components/Emphasis';
+import { useSectionCopy, type SectionKey } from '@/lib/content';
 
 // Fades content up once as it enters the viewport.
 export const Reveal = ({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) => {
@@ -19,27 +21,33 @@ export const Reveal = ({ children, delay = 0, className }: { children: ReactNode
 };
 
 interface SectionProps {
-  id: string;
+  id: SectionKey;
   index: string;
-  label: string;
-  title: ReactNode;
-  intro?: ReactNode;
   tone?: 'tint';
   children: ReactNode;
 }
 
-// Shared section shell: a small mono label, a headline, an optional intro and a background tone.
-export const Section = ({ id, index, label, title, intro, tone, children }: SectionProps) => (
-  <section id={id} className={cn('section', tone && `tone-${tone}`)}>
-    <div className="container-custom">
-      <Reveal className="mb-8 md:mb-10">
-        <p className="font-mono text-xs text-muted-foreground">
-          {index} / {label}
-        </p>
-        <h2 className="display mt-3 max-w-2xl text-[28px] md:text-[34px]">{title}</h2>
-        {intro && <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">{intro}</p>}
-      </Reveal>
-      {children}
-    </div>
-  </section>
-);
+// Shared section shell: label, headline and intro come from the site copy edited in the admin.
+export const Section = ({ id, index, tone, children }: SectionProps) => {
+  const { label, title, intro } = useSectionCopy(id);
+  return (
+    <section id={id} className={cn('section', tone && `tone-${tone}`)}>
+      <div className="container-custom">
+        <Reveal className="mb-8 md:mb-10">
+          <p className="font-mono text-xs text-muted-foreground">
+            {index} / {label}
+          </p>
+          {title ? (
+            <h2 className="display mt-3 max-w-2xl text-[28px] md:text-[34px]">
+              <Emphasis text={title} />
+            </h2>
+          ) : (
+            <div aria-hidden className="mt-3 h-9 w-2/3 max-w-md animate-pulse rounded-lg bg-foreground/[0.07]" />
+          )}
+          {intro && <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">{intro}</p>}
+        </Reveal>
+        {children}
+      </div>
+    </section>
+  );
+};

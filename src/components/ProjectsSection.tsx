@@ -10,17 +10,7 @@ const ProjectsSection = () => {
   const rest = data.filter((p) => !p.featured);
 
   return (
-    <Section
-      id="projects"
-      index="01"
-      label="Selected work"
-      title={
-        <>
-          Platforms with <em>real</em> business workflows
-        </>
-      }
-      intro="Permissions, approvals, multi-tenant data and reporting: the parts of a product that live below the interface."
-    >
+    <Section id="projects" index="01">
       <div className="space-y-4">
         {featured.map((project, i) => (
           <Reveal key={project.slug}>

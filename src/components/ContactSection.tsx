@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { z } from 'zod';
 import { Check, Copy, Loader2, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { isAxiosError } from 'axios';
@@ -32,6 +32,9 @@ const ContactSection = () => {
   const [errors, setErrors] = useState<Partial<ContactForm>>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [copied, setCopied] = useState(false);
+  // Spam signals checked by the server: a hidden field only bots fill, and how long the form took.
+  const [website, setWebsite] = useState('');
+  const startedAt = useRef(Date.now());
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -63,8 +66,8 @@ const ContactSection = () => {
 
     setStatus('sending');
     try {
-      const recaptchaToken = await recaptcha.getToken();
-      await api.post('/contact', { ...result.data, recaptchaToken });
+      const recaptchaToken = await recaptcha.getToken('contact');
+      await api.post('/contact', { ...result.data, website, elapsedMs: Date.now() - startedAt.current, recaptchaToken });
       setStatus('sent');
       setForm(empty);
       toast({ title: 'Message sent', description: "Thanks for reaching out. I'll reply soon." });
@@ -98,18 +101,7 @@ const ContactSection = () => {
     ) : null;
 
   return (
-    <Section
-      id="contact"
-      index="04"
-      label="Contact"
-      tone="tint"
-      title={
-        <>
-          Let's build something <em>together</em>
-        </>
-      }
-      intro="Hiring for a full-stack role, or want to talk through a product? Email is the quickest way to reach me, or use the form."
-    >
+    <Section id="contact" index="04" tone="tint">
       <div className="grid gap-3 lg:grid-cols-12">
         <Reveal className="lg:col-span-5">
           <Panel className="flex h-full flex-col p-6">
@@ -156,6 +148,10 @@ const ContactSection = () => {
         <Reveal delay={0.08} className="lg:col-span-7">
           <Panel className="h-full">
             <form onSubmit={onSubmit} noValidate className="p-6">
+              <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label htmlFor="website">Leave this field empty</label>
+                <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+              </div>
               <p className="eyebrow mb-5">Send a message</p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>

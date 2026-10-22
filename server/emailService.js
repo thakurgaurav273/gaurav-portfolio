@@ -4,6 +4,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder');
+
+// Resend reports failures in the result instead of throwing; turn them into errors so callers notice.
+const send = async (payload) => {
+  const { data, error } = await resend.emails.send(payload);
+  if (error) throw new Error(`Resend: ${error.message}`);
+  return data;
+};
 const fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
 
@@ -170,7 +177,7 @@ export async function sendContactEmail({ name, email, message }) {
     console.warn('MY_EMAIL not configured, using a fallback for contact email (might fail if not verified).');
   }
 
-  return resend.emails.send({
+  return send({
     from: `"Gaurav Singh Portfolio" <${fromEmail}>`,
     to: [ownerEmail || fromEmail],
     subject: `New Contact Form: ${name} (${email})`,
@@ -180,7 +187,7 @@ export async function sendContactEmail({ name, email, message }) {
 
 
 export async function sendConfirmationEmail({ name, email }) {
-  return resend.emails.send({
+  return send({
     from: `"Gaurav Singh" <${fromEmail}>`,
     to: [email],
     subject: 'Message Received - Gaurav Singh',
@@ -190,7 +197,7 @@ export async function sendConfirmationEmail({ name, email }) {
 
 
 export async function sendPasswordResetEmail(email, resetLink) {
-  return resend.emails.send({
+  return send({
     from: `"Portfolio Admin" <${fromEmail}>`,
     to: [email],
     subject: 'Password Reset Request',

@@ -12,6 +12,9 @@ export const heroSchema = z.object({
   about: z.array(str).default([]),
   socialLinks: z.array(z.object({ platform: str, url: str })).default([]),
   stats: z.array(z.object({ value: str, label: str })).default([]),
+  sections: z
+    .record(z.enum(['projects', 'experience', 'about', 'contact']), z.object({ label: str, title: str, intro: str }).partial())
+    .default({}),
 });
 
 const optionalText = z.union([str, z.null()]).optional().transform((v) => v || null);

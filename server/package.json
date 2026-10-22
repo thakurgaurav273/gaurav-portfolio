@@ -10,7 +10,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
-    "db:seed": "node prisma/seed.js",
+    "admin:create": "node scripts/create-admin.js",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },
