@@ -54,7 +54,7 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         success: "hsl(var(--success))",
-        "accent-2": "hsl(var(--accent-2))",
+        
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -90,10 +90,6 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
-        marquee: {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-50%)" },
-        },
         blink: {
           "0%, 50%": { opacity: "1" },
           "50.01%, 100%": { opacity: "0" },
@@ -107,7 +103,6 @@ export default {
         "fade-in-right": "fade-in-right 0.6s ease-out",
         "scale-in": "scale-in 0.4s ease-out",
         shimmer: "shimmer 2s infinite linear",
-        marquee: "marquee 40s linear infinite",
         blink: "blink 1.1s step-end infinite",
       },
     },

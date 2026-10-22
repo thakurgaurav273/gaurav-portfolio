@@ -17,7 +17,10 @@ const Index = () => {
         <AboutSection />
         <ContactSection />
       </main>
-      <Footer />
+      {/* The footer continues the grey contact band. */}
+      <div className="tone-tint">
+        <Footer />
+      </div>
     </div>
   );
 };

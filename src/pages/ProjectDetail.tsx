@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { optimizeImage, projectGallery, projectUrl, useProject, useProjects, type Screenshot } from '@/lib/content';
 
 const Block = ({ label, children }: { label: string; children: ReactNode }) => (
-  <Reveal className="rail border-t border-border py-14 md:py-20">
+  <Reveal className="rail border-t border-border py-10">
     <h2 className="rail-label eyebrow text-foreground md:pt-1.5">{label}</h2>
     <div className="rail-body">{children}</div>
   </Reveal>
@@ -33,7 +33,7 @@ const Shot = ({ shot, title, priority = false }: { shot: Screenshot; title: stri
         <BrowserFrame
           src={shot.url}
           alt={shot.alt || shot.label || title}
-          label={shot.label ? `${title} — ${shot.label}` : title}
+          label={shot.label ? `${title} / ${shot.label}` : title}
           width={1800}
           priority={priority}
         />
@@ -63,7 +63,7 @@ export default function ProjectDetail() {
   const { data: all } = useProjects();
 
   useEffect(() => {
-    if (project) document.title = `${project.title} — Gaurav Singh`;
+    if (project) document.title = `${project.title} | Gaurav Singh`;
     return () => {
       document.title = 'Gaurav Singh | Full-Stack Software Engineer';
     };
@@ -108,8 +108,6 @@ export default function ProjectDetail() {
   return (
     <div className="relative min-h-screen overflow-x-clip">
       <PageHeader back={{ to: '/all-projects', label: 'All projects' }} />
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px]" />
-      <div aria-hidden className="glow pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[600px] opacity-70" />
 
       <main className="container-custom pb-24">
         <Reveal className="pt-10 md:pt-16">
@@ -117,14 +115,14 @@ export default function ProjectDetail() {
             <span className="h-px w-8 bg-foreground/50" />
             {[project.category, project.status === 'in-progress' ? 'In progress' : null].filter(Boolean).join(' · ') || 'Case study'}
           </p>
-          <h1 className="display mt-7 text-[52px] sm:text-7xl md:text-[96px]">{project.title}</h1>
+          <h1 className="display mt-4 text-[32px] md:text-[44px]">{project.title}</h1>
           {project.headline && (
-            <p className="mt-7 max-w-3xl text-2xl font-medium leading-snug tracking-tight text-muted-foreground md:text-[30px]">
+            <p className="mt-3 max-w-2xl text-lg leading-snug text-muted-foreground">
               {project.headline}
             </p>
           )}
 
-          <div className="mt-12 grid gap-6 border-t border-border pt-6 sm:grid-cols-2 md:grid-cols-4">
+          <div className="mt-8 grid gap-6 border-t border-border pt-6 sm:grid-cols-2 md:grid-cols-4">
             {facts.map((f) => (
               <div key={f.label} className={f.label === 'Stack' ? 'md:col-span-2' : undefined}>
                 <p className="eyebrow mb-1.5">{f.label}</p>
@@ -148,7 +146,7 @@ export default function ProjectDetail() {
                 </div>
               ) : (
                 <p className="inline-flex items-center gap-1.5 text-[15px] text-muted-foreground">
-                  <Lock className="h-3.5 w-3.5" /> Private — no public demo
+                  <Lock className="h-3.5 w-3.5" /> Private, no public demo
                 </p>
               )}
             </div>
@@ -156,15 +154,15 @@ export default function ProjectDetail() {
         </Reveal>
 
         {cover && (
-          <Reveal className="mt-14 md:mt-20">
+          <Reveal className="mt-10">
             <Shot shot={cover} title={project.title} priority />
           </Reveal>
         )}
 
-        <div className="mt-16 md:mt-20">
+        <div className="mt-10">
           <Block label="Overview">
             <div className="max-w-2xl space-y-5">
-              <p className="text-2xl font-medium leading-snug tracking-tight md:text-[26px]">{project.description}</p>
+              <p className="text-lg font-medium leading-snug">{project.description}</p>
               {project.overview?.map((p, i) => (
                 <p key={i} className="leading-relaxed text-muted-foreground">{p}</p>
               ))}
@@ -243,10 +241,10 @@ export default function ProjectDetail() {
             className="group mt-10 flex items-end justify-between gap-6 border-t border-border pt-8"
           >
             <div>
-              <p className="eyebrow mb-4">Next project</p>
-              <p className="display text-5xl transition-colors group-hover:text-accent md:text-7xl">{next.title}</p>
+              <p className="eyebrow mb-2">Next project</p>
+              <p className="display text-2xl transition-colors group-hover:text-accent md:text-3xl">{next.title}</p>
             </div>
-            <ArrowRight className="mb-3 h-8 w-8 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground" />
+            <ArrowRight className="mb-1 h-6 w-6 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground" />
           </Link>
         )}
       </main>

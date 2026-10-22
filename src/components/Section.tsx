@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 // Fades content up once as it enters the viewport.
 export const Reveal = ({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) => {
@@ -7,10 +8,10 @@ export const Reveal = ({ children, delay = 0, className }: { children: ReactNode
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y: 24, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={reduce ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
@@ -23,22 +24,20 @@ interface SectionProps {
   label: string;
   title: ReactNode;
   intro?: ReactNode;
+  tone?: 'tint';
   children: ReactNode;
 }
 
-// Shared section shell: a mono `// 01 · label` tag, a large headline and an optional intro.
-export const Section = ({ id, index, label, title, intro, children }: SectionProps) => (
-  <section id={id} className="section">
+// Shared section shell: a small mono label, a headline, an optional intro and a background tone.
+export const Section = ({ id, index, label, title, intro, tone, children }: SectionProps) => (
+  <section id={id} className={cn('section', tone && `tone-${tone}`)}>
     <div className="container-custom">
-      <Reveal className="mb-14 md:mb-20">
-        <p className="flex items-center gap-3 font-mono text-[13px] text-muted-foreground">
-          <span className="text-accent">//</span>
-          <span>{index}</span>
-          <span className="h-px w-10 bg-border" />
-          <span className="uppercase tracking-[0.14em]">{label}</span>
+      <Reveal className="mb-8 md:mb-10">
+        <p className="font-mono text-xs text-muted-foreground">
+          {index} / {label}
         </p>
-        <h2 className="display mt-5 max-w-3xl text-[40px] sm:text-5xl md:text-6xl">{title}</h2>
-        {intro && <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">{intro}</p>}
+        <h2 className="display mt-3 max-w-2xl text-[28px] md:text-[34px]">{title}</h2>
+        {intro && <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">{intro}</p>}
       </Reveal>
       {children}
     </div>

@@ -4,6 +4,7 @@ import { ArrowLeft, Command, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useHero } from '@/lib/content';
 import { cn } from '@/lib/utils';
+import Logo from '@/components/Logo';
 import { navLinks, openCommandMenu, scrollToSection, sectionIds, sectionPath } from '@/lib/nav';
 import { lockScroll } from '@/lib/scroll';
 
@@ -59,15 +60,13 @@ const Navigation = ({ back }: { back?: { to: string; label: string } }) => {
           className={cn(
             'flex h-14 items-center justify-between rounded-full border pl-4 pr-2 transition-all duration-500',
             scrolled || open || !onHome
-              ? 'border-border bg-background/70 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.8)] backdrop-blur-xl'
+              ? 'border-border bg-background/80 shadow-[0_8px_24px_-16px_rgba(20,22,26,0.25)] backdrop-blur-xl'
               : 'border-transparent bg-transparent',
           )}
         >
           <div className="flex items-center gap-2">
             <Link {...linkTo('home')} className="group flex items-center gap-2.5 text-[15px] font-medium">
-              <span className="grid h-8 w-8 place-items-center rounded-full border border-border bg-card transition-colors group-hover:border-accent/50">
-                <img src="/logo_dark.png" alt="" className="h-4 w-auto brightness-0 invert" />
-              </span>
+              <Logo className="h-8 w-auto transition-transform duration-300 group-hover:scale-105" />
               <span className="hidden sm:inline">{hero.name}</span>
             </Link>
             {back && (
@@ -105,14 +104,14 @@ const Navigation = ({ back }: { back?: { to: string; label: string } }) => {
           <div className="flex items-center gap-1.5">
             <button
               onClick={openCommandMenu}
-              className="hidden h-9 items-center gap-2 rounded-full border border-border bg-card/60 pl-3 pr-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+              className="hidden h-9 items-center gap-2 rounded-full border border-border bg-card pl-3 pr-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
               aria-label="Open command menu"
             >
               <Command className="h-3.5 w-3.5" />
               <span className="kbd">K</span>
             </button>
             <Link {...linkTo('contact')}
-              className="hidden h-9 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-all hover:bg-accent sm:inline-flex"
+              className="hidden h-9 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/85 sm:inline-flex"
             >
               Let's talk
             </Link>
@@ -134,16 +133,16 @@ const Navigation = ({ back }: { back?: { to: string; label: string } }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className="mt-2 rounded-3xl border border-border bg-background/95 p-3 shadow-[0_20px_40px_-20px_rgba(0,0,0,0.9)] backdrop-blur-xl md:hidden"
+              className="mt-2 rounded-3xl border border-border bg-background/95 p-3 shadow-[0_20px_40px_-24px_rgba(20,22,26,0.35)] backdrop-blur-xl md:hidden"
             >
               {navLinks.map((link, i) => (
-                <Link key={link.id} {...linkTo(link.id)} className="flex items-baseline gap-3 rounded-2xl px-4 py-3 text-2xl font-semibold tracking-tight">
-                  <span className="font-mono text-xs text-accent">0{i + 1}</span>
+                <Link key={link.id} {...linkTo(link.id)} className="flex items-baseline gap-3 rounded-xl px-4 py-2.5 text-lg font-medium">
+                  <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
                   {link.label}
                 </Link>
               ))}
               {hero.resumeUrl && (
-                <a href={hero.resumeUrl} target="_blank" rel="noopener noreferrer" className="block rounded-2xl px-4 py-3 text-2xl font-semibold tracking-tight">
+                <a href={hero.resumeUrl} target="_blank" rel="noopener noreferrer" className="block rounded-xl px-4 py-2.5 text-lg font-medium">
                   Resume ↗
                 </a>
               )}

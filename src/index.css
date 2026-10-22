@@ -6,41 +6,41 @@
 @tailwind utilities;
 
 /*
-  Dark-first developer palette: near-black zinc surfaces, high-contrast type and a
-  single emerald accent that fades to cyan in gradients (highlights, focus, status).
+  Light palette: off-white paper, near-black ink, warm grey neutrals and one
+  cobalt accent kept for small signals (link hovers, focus).
+  No gradients or glows; depth comes from borders and soft shadows.
 */
 @layer base {
   :root {
-    --background: 240 10% 3.9%;   /* #09090B */
-    --foreground: 0 0% 96%;
+    --background: 40 14% 98%;     /* #FAFAF8 */
+    --foreground: 220 15% 9%;     /* #14161A */
 
-    --card: 240 7% 6.5%;          /* #0F0F12 */
-    --card-foreground: 0 0% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 9%;
 
-    --popover: 240 7% 7%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 9%;
 
-    --primary: 0 0% 96%;          /* buttons are light on dark */
-    --primary-foreground: 240 10% 4%;
+    --primary: 220 15% 9%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 5% 11%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 40 8% 94.5%;
+    --secondary-foreground: 220 15% 9%;
 
-    --muted: 240 5% 11%;
-    --muted-foreground: 240 5% 63%;
+    --muted: 40 8% 94.5%;
+    --muted-foreground: 220 6% 40%;  /* AA on paper */
 
-    --accent: 152 72% 56%;        /* emerald */
-    --accent-2: 189 85% 60%;      /* cyan, gradient partner */
-    --accent-foreground: 240 10% 4%;
+    --accent: 224 76% 48%;        /* cobalt #1D4ED8-ish */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 58%;
+    --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 152 72% 56%;
+    --success: 145 63% 32%;
 
-    --border: 240 5% 15%;
-    --input: 240 5% 18%;
-    --ring: 152 72% 56%;
+    --border: 40 6% 88%;
+    --input: 40 6% 84%;
+    --ring: 224 76% 48%;
 
     --radius: 0.75rem;
   }
@@ -53,7 +53,6 @@
 
   html {
     scroll-padding-top: 5.5rem;
-    color-scheme: dark;
   }
 
   body {
@@ -67,8 +66,7 @@
   }
 
   ::selection {
-    background: hsl(var(--accent) / 0.3);
-    color: hsl(var(--foreground));
+    background: hsl(var(--accent) / 0.15);
   }
 
   /* Faint film grain over the whole page. */
@@ -78,7 +76,7 @@
     inset: 0;
     z-index: 100;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.025;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
@@ -96,27 +94,33 @@
 }
 
 @layer components {
+  /*
+    Section tones. Each one re-points the colour tokens, so everything inside
+    (cards, chips, buttons, inputs) adapts without per-component overrides.
+  */
+  .tone-tint {
+    --background: 40 12% 94.5%;
+    --border: 40 7% 85%;
+    @apply bg-background text-foreground;
+  }
+
+
   .container-custom {
     @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
   }
 
   .section {
-    @apply py-24 md:py-32;
+    @apply py-14 md:py-20;
   }
 
-  /* Large, tight sans headlines; *emphasis* picks up the accent gradient. */
+  /* Tight sans headlines. *emphasis* from content renders as plain text. */
   .display {
-    @apply font-sans font-semibold tracking-[-0.035em] text-foreground;
-    line-height: 1.02;
+    @apply font-sans font-semibold tracking-[-0.025em] text-foreground;
+    line-height: 1.15;
   }
 
-  .display em,
-  .text-gradient {
+  .display em {
     @apply not-italic;
-    background: linear-gradient(100deg, hsl(var(--accent)) 10%, hsl(var(--accent-2)) 90%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
   }
 
   /* Kept for inner pages that still lay out with a label column. */
@@ -132,70 +136,28 @@
     @apply md:col-span-9;
   }
 
-  /* Blueprint grid behind the hero, faded out towards the edges. */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, hsl(0 0% 100% / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(0 0% 100% / 0.045) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
-  }
-
-  /* Soft accent glow used behind the hero and contact block. */
-  .glow {
-    background:
-      radial-gradient(40% 50% at 30% 30%, hsl(var(--accent) / 0.18), transparent 70%),
-      radial-gradient(35% 45% at 75% 20%, hsl(var(--accent-2) / 0.14), transparent 70%);
-    filter: blur(20px);
-  }
-
   .frame {
     @apply overflow-hidden rounded-2xl border border-border bg-card;
-    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 2px rgba(20, 22, 26, 0.04), 0 12px 32px -18px rgba(20, 22, 26, 0.18);
   }
 
-  /*
-    Card with a cursor-following spotlight. --x/--y are set by <Spotlight>; the
-    ::before paints the glow and ::after lights up the border under the cursor.
-  */
-  .spot-card {
-    @apply relative overflow-hidden rounded-2xl border border-border bg-card;
-    isolation: isolate;
+  /* Plain surface card. Add .panel-link when the whole card is clickable. */
+  .panel {
+    @apply relative overflow-hidden rounded-xl border border-border bg-card;
+    box-shadow: 0 1px 2px rgba(20, 22, 26, 0.04);
   }
 
-  .spot-card::before,
-  .spot-card::after {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
+  .panel-link {
+    @apply transition-[border-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-foreground/20;
   }
 
-  .spot-card::before {
-    inset: 0;
-    z-index: -1;
-    background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), hsl(var(--accent) / 0.09), transparent 45%);
-  }
-
-  .spot-card::after {
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: radial-gradient(260px circle at var(--x, 50%) var(--y, 50%), hsl(var(--accent) / 0.55), transparent 60%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-
-  .spot-card:hover::before,
-  .spot-card:hover::after {
-    opacity: 1;
+  .panel-link:hover {
+    box-shadow: 0 1px 2px rgba(20, 22, 26, 0.04), 0 18px 36px -24px rgba(20, 22, 26, 0.3);
   }
 
   /* Small mono label used for section eyebrows and metadata. */
   .eyebrow {
-    @apply font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground;
+    @apply font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground;
   }
 
   .link-underline {
@@ -203,15 +165,15 @@
   }
 
   .chip {
-    @apply inline-flex items-center rounded-md border border-border bg-secondary/60 px-2 py-0.5 font-mono text-[12px] leading-5 text-foreground/75;
+    @apply inline-flex items-center rounded-md border border-border bg-secondary/70 px-2 py-0.5 font-mono text-[12px] leading-5 text-foreground/75;
   }
 
   .btn-primary {
-    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-foreground px-6 text-[15px] font-medium text-background transition-all hover:bg-accent hover:shadow-[0_0_30px_-6px_hsl(var(--accent)/0.7)];
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/85;
   }
 
   .btn-ghost {
-    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 text-[15px] font-medium text-foreground backdrop-blur transition-colors hover:border-foreground/30 hover:bg-secondary;
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground/30;
   }
 
   .kbd {
@@ -223,5 +185,5 @@
 [cmdk-item][data-selected='true'] {
   background: hsl(var(--secondary));
   color: hsl(var(--foreground));
-  box-shadow: inset 2px 0 0 hsl(var(--accent));
+  box-shadow: inset 2px 0 0 hsl(var(--foreground));
 }

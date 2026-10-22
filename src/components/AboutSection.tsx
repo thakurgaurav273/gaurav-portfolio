@@ -1,5 +1,5 @@
 import { Section, Reveal } from '@/components/Section';
-import Spotlight from '@/components/Spotlight';
+import Panel from '@/components/Panel';
 import { shortCompany, useExperience, useHero, useSkills } from '@/lib/content';
 import profileImage from '@/assets/profile.png';
 
@@ -34,70 +34,68 @@ const AboutSection = () => {
       }
     >
       {/* Bento grid: story, profile, numbers and the toolbox. */}
-      <div className="grid gap-4 md:grid-cols-6">
+      <div className="grid gap-3 md:grid-cols-6">
         <Reveal className="md:col-span-4">
-          <Spotlight className="h-full p-7 md:p-10">
-            {lead && <p className="text-2xl font-medium leading-snug tracking-tight md:text-[28px]">{lead}</p>}
+          <Panel className="h-full p-6">
+            {lead && <p className="text-lg font-medium leading-snug tracking-tight">{lead}</p>}
             {paragraphs.length > 0 && (
-              <div className="mt-8 space-y-5">
+              <div className="mt-4 space-y-4">
                 {paragraphs.map((p, i) => (
                   <p key={i} className="leading-relaxed text-muted-foreground">{p}</p>
                 ))}
               </div>
             )}
-          </Spotlight>
+          </Panel>
         </Reveal>
 
-        <div className="grid gap-4 md:col-span-2">
+        <div className="grid gap-3 md:col-span-2">
           <Reveal>
-            <Spotlight className="flex h-full flex-col items-start justify-between gap-8 p-7">
+            <Panel className="flex h-full flex-col items-start justify-between gap-5 p-6">
               <div className="relative">
-                <div aria-hidden className="absolute -inset-2 rounded-full bg-gradient-to-br from-accent/50 to-accent-2/40 blur-md" />
-                <img src={profileImage} alt={hero.name} className="relative h-20 w-20 rounded-full border border-border bg-card object-cover" />
+                <img src={profileImage} alt={hero.name} className="relative h-14 w-14 rounded-full border border-border bg-card object-cover" />
               </div>
               <div>
-                <p className="text-lg font-semibold tracking-tight">{hero.name}</p>
+                <p className="font-semibold tracking-tight">{hero.name}</p>
                 {current && (
                   <p className="mt-1 font-mono text-xs text-muted-foreground">
                     {current.role} · {shortCompany(current.company)}
                   </p>
                 )}
               </div>
-            </Spotlight>
+            </Panel>
           </Reveal>
 
           {stats.length > 0 && (
             <Reveal delay={0.05}>
-              <Spotlight className="grid h-full grid-cols-2 gap-6 p-7">
+              <Panel className="grid h-full grid-cols-2 gap-5 p-6">
                 {stats.map((s) => (
                   <div key={s.label}>
-                    <p className="text-gradient text-4xl font-semibold tracking-tight">{s.value}</p>
+                    <p className="text-2xl font-semibold tracking-tight">{s.value}</p>
                     <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{s.label}</p>
                   </div>
                 ))}
-              </Spotlight>
+              </Panel>
             </Reveal>
           )}
         </div>
 
         {skills.map((group, i) => (
           <Reveal key={group.id ?? group.category} delay={i * 0.05} className="md:col-span-3">
-            <Spotlight className="h-full p-6">
+            <Panel className="h-full p-5">
               <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                <span className="text-accent">#</span>
                 {group.category}
               </p>
-              <ul className="mt-5 flex flex-wrap gap-2">
+              <ul className="mt-3 flex flex-wrap gap-1.5">
                 {group.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-lg border border-border bg-secondary/50 px-3 py-1.5 text-sm text-foreground/85 transition-colors hover:border-accent/50 hover:text-foreground"
+                    className="rounded-md border border-border bg-secondary/60 px-2.5 py-1 text-[13px] text-foreground/85 transition-colors hover:border-foreground/30 hover:text-foreground"
                   >
                     {item}
                   </li>
                 ))}
               </ul>
-            </Spotlight>
+            </Panel>
           </Reveal>
         ))}
       </div>

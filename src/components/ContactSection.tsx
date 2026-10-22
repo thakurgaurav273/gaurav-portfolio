@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useRecaptcha } from '@/hooks/use-recaptcha';
 import { Section, Reveal } from '@/components/Section';
-import Spotlight from '@/components/Spotlight';
+import Panel from '@/components/Panel';
 import { socialIcon } from '@/lib/social';
 import { emailFrom, useHero } from '@/lib/content';
 import api from '@/lib/api';
@@ -67,7 +67,7 @@ const ContactSection = () => {
       await api.post('/contact', { ...result.data, recaptchaToken });
       setStatus('sent');
       setForm(empty);
-      toast({ title: 'Message sent', description: "Thanks for reaching out — I'll reply soon." });
+      toast({ title: 'Message sent', description: "Thanks for reaching out. I'll reply soon." });
       setTimeout(() => setStatus('idle'), 4000);
     } catch (error) {
       setStatus('idle');
@@ -102,6 +102,7 @@ const ContactSection = () => {
       id="contact"
       index="04"
       label="Contact"
+      tone="tint"
       title={
         <>
           Let's build something <em>together</em>
@@ -109,27 +110,26 @@ const ContactSection = () => {
       }
       intro="Hiring for a full-stack role, or want to talk through a product? Email is the quickest way to reach me, or use the form."
     >
-      <div className="grid gap-4 lg:grid-cols-12">
+      <div className="grid gap-3 lg:grid-cols-12">
         <Reveal className="lg:col-span-5">
-          <Spotlight className="flex h-full flex-col p-7 md:p-9">
-            <div aria-hidden className="glow pointer-events-none absolute -inset-20 -z-10 opacity-70" />
+          <Panel className="flex h-full flex-col p-6">
             <p className="eyebrow">Email</p>
             <a
               href={`mailto:${email}`}
-              className="mt-3 text-xl font-semibold tracking-tight transition-colors [overflow-wrap:anywhere] hover:text-accent sm:text-2xl"
+              className="mt-2 text-lg font-semibold tracking-tight transition-colors [overflow-wrap:anywhere] hover:text-accent"
             >
               {email}
             </a>
             <button
               onClick={copyEmail}
-              className="mt-5 inline-flex h-9 w-fit items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="mt-4 inline-flex h-8 w-fit items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
               aria-label="Copy email address"
             >
               {copied ? <Check className="h-3.5 w-3.5 text-success" /> : <Copy className="h-3.5 w-3.5" />}
               {copied ? 'Copied!' : 'Copy address'}
             </button>
 
-            <p className="eyebrow mt-12">Elsewhere</p>
+            <p className="eyebrow mt-8">Elsewhere</p>
             <ul className="mt-3 divide-y divide-border border-y border-border">
               {hero.socialLinks
                 .filter((l) => !l.url.startsWith('mailto:'))
@@ -141,42 +141,42 @@ const ContactSection = () => {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex items-center gap-3 py-3.5 text-[15px] text-foreground/85 transition-colors hover:text-foreground"
+                        className="group flex items-center gap-3 py-3 text-[15px] text-foreground/85 transition-colors hover:text-foreground"
                       >
-                        <Icon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-accent" /> {link.platform}
+                        <Icon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" /> {link.platform}
                         <ArrowUpRight className="ml-auto h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                       </a>
                     </li>
                   );
                 })}
             </ul>
-          </Spotlight>
+          </Panel>
         </Reveal>
 
         <Reveal delay={0.08} className="lg:col-span-7">
-          <Spotlight className="h-full">
-            <form onSubmit={onSubmit} noValidate className="p-7 md:p-9">
-              <p className="eyebrow mb-8">Send a message</p>
-              <div className="grid gap-6 sm:grid-cols-2">
+          <Panel className="h-full">
+            <form onSubmit={onSubmit} noValidate className="p-6">
+              <p className="eyebrow mb-5">Send a message</p>
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="name" className="mb-2 block">Name</Label>
-                  <Input {...field('name')} autoComplete="name" placeholder="Jane Doe" className="h-12 rounded-xl bg-background/60" />
+                  <Input {...field('name')} autoComplete="name" placeholder="Jane Doe" className="h-10 rounded-lg bg-background/60" />
                   {fieldError('name')}
                 </div>
                 <div>
                   <Label htmlFor="email" className="mb-2 block">Email</Label>
-                  <Input {...field('email')} type="email" autoComplete="email" placeholder="jane@company.com" className="h-12 rounded-xl bg-background/60" />
+                  <Input {...field('email')} type="email" autoComplete="email" placeholder="jane@company.com" className="h-10 rounded-lg bg-background/60" />
                   {fieldError('email')}
                 </div>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-4">
                 <Label htmlFor="message" className="mb-2 block">Message</Label>
-                <Textarea {...field('message')} placeholder="What are you working on?" className="min-h-44 resize-y rounded-xl bg-background/60" />
+                <Textarea {...field('message')} placeholder="What are you working on?" className="min-h-36 resize-y rounded-lg bg-background/60" />
                 {fieldError('message')}
               </div>
 
-              <div className="mt-8 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-5 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
                 {recaptcha.enabled ? (
                   <p className="text-xs text-muted-foreground">
                     Protected by reCAPTCHA ·{' '}
@@ -187,7 +187,7 @@ const ContactSection = () => {
                 ) : (
                   <span />
                 )}
-                <button type="submit" disabled={status !== 'idle'} className="btn-primary h-12 px-7 disabled:opacity-60">
+                <button type="submit" disabled={status !== 'idle'} className="btn-primary disabled:opacity-60">
                   {status === 'sending' ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" /> Sending
@@ -204,7 +204,7 @@ const ContactSection = () => {
                 </button>
               </div>
             </form>
-          </Spotlight>
+          </Panel>
         </Reveal>
       </div>
     </Section>

@@ -133,7 +133,7 @@ export const formatMonth = (d?: string | null) =>
   d ? new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' }) : '';
 
 export const formatPeriod = (start: string, end?: string | null, isCurrent?: boolean) =>
-  `${formatMonth(start)} — ${isCurrent ? 'Present' : formatMonth(end)}`;
+  `${formatMonth(start)} to ${isCurrent ? 'Present' : formatMonth(end)}`;
 
 // Strips the parenthetical legal name, e.g. "Eagle Inbrit (Xenage Solutions)" → "Eagle Inbrit".
 export const shortCompany = (name?: string) => name?.replace(/\s*\(.*\)\s*$/, '');

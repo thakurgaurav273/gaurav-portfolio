@@ -2,7 +2,7 @@
   "hero": {
     "name": "Gaurav Singh",
     "subtitle": "Full-stack engineer building *production software* for complex business workflows.",
-    "description": "I work across React, Next.js, TypeScript, Node.js, NestJS and PostgreSQL — currently on an enterprise freight-forwarding platform at Eagle Inbrit, previously on CometChat's React, Angular and Vue UI Kits and SDK integrations.",
+    "description": "I work across React, Next.js, TypeScript, Node.js, NestJS and PostgreSQL, currently on an enterprise freight-forwarding platform at Eagle Inbrit, previously on CometChat's React, Angular and Vue UI Kits and SDK integrations.",
     "socialLinks": [
       {
         "platform": "GitHub",
@@ -19,9 +19,9 @@
     ],
     "stats": [],
     "about": [
-      "I've spent the last few years where product UI meets the systems behind it — first on CometChat's developer-facing UI Kits and SDK integrations, now on an enterprise freight-forwarding platform at Eagle Inbrit.",
+      "I've spent the last few years where product UI meets the systems behind it: first on CometChat's developer-facing UI Kits and SDK integrations, now on an enterprise freight-forwarding platform at Eagle Inbrit.",
       "That mix shapes how I work. I think about the API contract and the data model as much as the component, I build reusable pieces that other developers integrate, and I pay attention to the edge cases in long, rule-heavy business workflows.",
-      "Alongside that I've designed and built full-stack products across construction, hiring, retail and healthcare — working through permissions, multi-tenant data, approval workflows and reporting on Next.js, NestJS and PostgreSQL."
+      "Alongside that I've designed and built full-stack products across construction, hiring, retail and healthcare, working through permissions, multi-tenant data, approval workflows and reporting on Next.js, NestJS and PostgreSQL."
     ]
   },
   "skills": [
@@ -96,7 +96,7 @@
       "endDate": "2026-02-01T00:00:00.000Z",
       "isCurrent": false,
       "description": [
-        "Built and maintained reusable components in CometChat's React, Angular and Vue UI Kits — developer-facing libraries that customers embed to add chat to their own products.",
+        "Built and maintained reusable components in CometChat's React, Angular and Vue UI Kits: developer-facing libraries that customers embed to add chat to their own products.",
         "Worked on stability improvements to the core UI Kit packages to make customer integrations simpler.",
         "Shipped features in Agile sprints across the three framework kits, keeping behaviour consistent between them."
       ],
@@ -136,7 +136,7 @@
       "slug": "engineering-workspace",
       "description": "An internal platform that brings daily check-ins, task updates, OKRs, performance reviews and peer recognition into one workspace, scoped by organisation, team and role.",
       "tagline": "Check-ins, goals, reviews and recognition for engineering teams.",
-      "headline": "A workspace for engineering organisations to track progress, goals and reviews across teams — without micromanagement.",
+      "headline": "A workspace for engineering organisations to track progress, goals and reviews across teams, without micromanagement.",
       "subheadline": "Check-ins, goals, reviews, recognition, and personal work in one workspace.",
       "overview": [
         "Engineering leadership runs on two questions: what is actually happening this week, and is anyone blocked. The answers are scattered across a project tracker, a standup thread, a goals document nobody has opened since the quarter started, and a review cycle that arrives twice a year with no supporting evidence.",
@@ -287,23 +287,23 @@
       "liveUrl": "",
       "architecture": [
         "Multi-organisation data model: organisations contain teams and members, and every check-in, goal, review and recognition is scoped to that hierarchy.",
-        "Role-based access control decides who can see and act on what — a member's private workspace, a manager's team view and org-wide goals each have different visibility rules.",
-        "Reviews draw on records that already exist — check-ins, goal progress, recognition — so the schema links them rather than duplicating them into the review.",
+        "Role-based access control decides who can see and act on what: a member's private workspace, a manager's team view and org-wide goals each have different visibility rules.",
+        "Reviews draw on records that already exist (check-ins, goal progress, recognition), so the schema links them rather than duplicating them into the review.",
         "Dashboard metrics (check-in rate, blockers, goal progress, top contributors) are aggregated from the same relational data in PostgreSQL through Prisma.",
-        "NestJS modules follow the product domains — check-ins, goals, reviews, recognition, people — behind a REST API consumed by the Next.js app."
+        "NestJS modules follow the product domains (check-ins, goals, reviews, recognition, people) behind a REST API consumed by the Next.js app."
       ]
     },
     {
       "title": "Construction ERP",
       "slug": "construction-erp",
-      "description": "Projects, procurement, budgets, materials, workforce and site reporting in one system — so a purchase order, a site report and a budget line all trace back to the same project.",
+      "description": "Projects, procurement, budgets, materials, workforce and site reporting in one system, so a purchase order, a site report and a budget line all trace back to the same project.",
       "tagline": "Site-to-office operations in one system.",
       "headline": "A construction management platform connecting site execution, procurement, budgets and workforce for multi-site firms.",
       "subheadline": "Projects, procurement, materials, workforce, and finance in one system.",
       "overview": [
         "Construction work is coordinated across three places that rarely agree: a site, an office and a supplier's inbox. Purchase orders sit in WhatsApp. Progress lives in a site engineer's notebook. Finance finds out about a cost overrun a month after it happened.",
         "The platform puts the whole chain in one system. A site engineer files a daily report from a phone, and that report attaches to a project. The project holds its own budget, purchase orders, material requests, workforce allocation and documents. When a PO is raised it moves through the firm's approval chain, and committed cost updates against the project budget the moment it clears.",
-        "It is designed for firms running multiple active sites with a real procurement function — contractors, real estate developers and infrastructure companies — where vendors, RFQs and approvals need to be tracked against each project."
+        "It is designed for firms running multiple active sites with a real procurement function (contractors, real estate developers and infrastructure companies), where vendors, RFQs and approvals need to be tracked against each project."
       ],
       "capabilities": [
         {
@@ -439,7 +439,7 @@
       "liveUrl": "",
       "architecture": [
         "The project is the central entity: budgets, purchase orders, material requests, workforce allocation, documents and site reports all hang off it, so cost and progress roll up without manual reconciliation.",
-        "Procurement runs as a workflow — RFQ, quotation comparison, purchase order, approval, delivery — with each transition recorded for the audit trail.",
+        "Procurement runs as a workflow (RFQ, quotation comparison, purchase order, approval, delivery), with each transition recorded for the audit trail.",
         "Approval routing follows each firm's own chain rather than a fixed one, and committed cost updates against the project budget once a purchase order clears.",
         "Site engineers report from a React Native app; reports attach to the same project records the office works from.",
         "Role-based access separates site, procurement, finance and admin views. Services are containerised with Docker for cloud or on-premise hosting."
@@ -805,10 +805,10 @@
       "description": "A cross-platform messaging app for Web, Android, and iOS using Ionic React and CometChat SDK, with a reusable Capacitor push notification plugin.",
       "tagline": "One messaging codebase, three platforms.",
       "headline": "A full messaging client for web, Android, and iOS built from a single Ionic React codebase.",
-      "subheadline": "Real-time chat, VoIP calling, reactions, and threaded replies — with the push-notification layer extracted into a Capacitor plugin published on npm.",
+      "subheadline": "Real-time chat, VoIP calling, reactions, and threaded replies, with the push-notification layer extracted into a Capacitor plugin published on npm.",
       "overview": [
         "Messaging looks simple until you ship it to three platforms at once. A browser tab, an Android device, and an iPhone each want a different notification mechanism, a different permission prompt, and a different idea of what happens when a call arrives while the app is closed. Most of the work in a chat client is not the chat.",
-        "This app puts the whole surface in one Ionic React codebase and leans on the CometChat SDK for the real-time layer — one-to-one and group conversations, reactions, threaded replies, status updates, and VoIP calls. Capacitor wraps it for the two mobile stores so the same components render natively rather than in a compatibility shim.",
+        "This app puts the whole surface in one Ionic React codebase and leans on the CometChat SDK for the real-time layer: one-to-one and group conversations, reactions, threaded replies, status updates, and VoIP calls. Capacitor wraps it for the two mobile stores so the same components render natively rather than in a compatibility shim.",
         "The notification handling turned out to be the reusable part. Registering FCM tokens on Android, APNs on iOS, and separate VoIP tokens for incoming calls is the same dance in every Capacitor app, so it was pulled out into its own plugin and published to npm rather than left buried in this project."
       ],
       "capabilities": [
@@ -1235,15 +1235,15 @@
       "architecture": []
     },
     {
-      "title": "BEPL — Babu Erectors",
+      "title": "BEPL (Babu Erectors)",
       "slug": "bepl",
       "description": "Corporate website for Babu Erectors Pvt. Ltd., a structural steel erection and heavy engineering contractor, built with an animated 3D-accented front end.",
       "tagline": "A corporate site for a structural steel contractor.",
       "headline": "Marketing site for a four-decade-old structural steel erection and heavy engineering contractor.",
-      "subheadline": "Services, project record, careers, and enquiries presented for an industrial buyer — with motion and 3D used to carry weight, not decorate.",
+      "subheadline": "Services, project record, careers, and enquiries presented for an industrial buyer, with motion and 3D used to carry weight, not decorate.",
       "overview": [
         "Industrial contractors are usually sold on credentials: how long you have operated, what you have erected, and whether you can be trusted on a live site. The brief here was to present four decades of structural steel erection work to that audience without the site feeling like a brochure from the same era.",
-        "The build pairs a conventional marketing structure — services, project record, careers, contact — with a motion layer that keeps the pages moving under scroll. Framer Motion drives the section reveals and Three.js carries the geometric accents behind the hero, tuned to sit behind the content rather than compete with it.",
+        "The build pairs a conventional marketing structure (services, project record, careers, contact) with a motion layer that keeps the pages moving under scroll. Framer Motion drives the section reveals and Three.js carries the geometric accents behind the hero, tuned to sit behind the content rather than compete with it.",
         "Credibility markers do the selling: ISO certification, years in operation, and a counted record of completed projects, clients, and installations sit high on the page where an industrial buyer looks for them first."
       ],
       "capabilities": [
@@ -1255,7 +1255,7 @@
         {
           "icon": "projects",
           "title": "Project record",
-          "description": "Completed work presented as a credential — counted, categorised, and placed where a prospective client looks first."
+          "description": "Completed work presented as a credential: counted, categorised, and placed where a prospective client looks first."
         },
         {
           "icon": "analytics",

@@ -21,25 +21,23 @@ export default function AllProjects() {
   return (
     <div className="relative min-h-screen overflow-x-clip">
       <PageHeader back={{ to: '/', label: 'Home' }} />
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px]" />
-      <div aria-hidden className="glow pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[600px] opacity-70" />
       <main className="container-custom pb-24">
         <Reveal className="max-w-3xl pt-10 md:pt-16">
           <p className="eyebrow flex items-center gap-3 text-foreground">
             <span className="h-px w-8 bg-foreground/50" />
             Archive
           </p>
-          <h1 className="display mt-7 text-[52px] sm:text-7xl md:text-[96px]">
+          <h1 className="display mt-4 text-[32px] md:text-[44px]">
             Everything I've <em>built</em>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
             Business platforms, developer tooling and client sites. Each one opens to a write-up of the problem, the
             workflows and how it's put together.
           </p>
         </Reveal>
 
         {categories.length > 2 && (
-          <div className="mt-12 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+          <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
             {categories.map((c) => (
               <button
                 key={c}
@@ -58,7 +56,7 @@ export default function AllProjects() {
           </div>
         )}
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
           {isLoading
             ? Array.from({ length: 6 }, (_, i) => <div key={i} className="aspect-[16/12] animate-pulse rounded-2xl bg-card" />)
             : shown.map((project) => <ProjectTile key={project.slug} project={project} />)}

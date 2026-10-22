@@ -7,7 +7,7 @@ const Footer = () => {
   const hero = useHero();
 
   return (
-    <footer className="container-custom pb-10 pt-10">
+    <footer className="container-custom py-8">
       <div className="flex flex-col gap-6 border-t border-border pt-8 text-sm md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-medium">© {new Date().getFullYear()} {hero.name}</p>
@@ -31,7 +31,7 @@ const Footer = () => {
           })}
           <button
             onClick={() => scrollToY(0)}
-            className="ml-2 grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-accent/50 hover:text-accent"
+            className="ml-2 grid h-10 w-10 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
             aria-label="Back to top"
           >
             <ArrowUp className="h-4 w-4" />
