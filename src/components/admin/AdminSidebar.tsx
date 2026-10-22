@@ -3,6 +3,8 @@ import { ArrowUpRight, LogOut } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { cn } from '@/lib/utils';
 import { adminLinks } from './links';
+import { clearSession, getSession } from '@/lib/session';
+import api from '@/lib/api';
 
 const itemClass = ({ isActive }: { isActive: boolean }) =>
   cn(
@@ -14,9 +16,12 @@ const itemClass = ({ isActive }: { isActive: boolean }) =>
 export const AdminSidebar = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
+  const handleLogout = async () => {
+    const session = getSession();
+    clearSession();
     navigate('/admin/login');
+    // Revoke the refresh token server-side so a copy of it can't be reused.
+    if (session) await api.post('/auth/logout', { refreshToken: session.refreshToken }).catch(() => {});
   };
 
   return (

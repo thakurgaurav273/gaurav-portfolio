@@ -210,3 +210,38 @@ export async function sendPasswordResetEmail(email, resetLink) {
   });
 }
 
+
+
+const getLoginCodeTemplate = (code) => `
+<!DOCTYPE html>
+<html lang="en">
+<body style="margin:0;padding:32px 16px;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#14161a;">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+    <table width="440" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e4e2dd;border-radius:12px;">
+      <tr><td style="padding:32px;">
+        <p style="margin:0 0 8px;font-size:13px;color:#5f6368;">Portfolio admin</p>
+        <h1 style="margin:0 0 16px;font-size:20px;">Your sign-in code</h1>
+        <p style="margin:0 0 24px;font-size:15px;line-height:1.5;color:#3c4043;">Enter this code to finish signing in. It expires in 10 minutes.</p>
+        <p style="margin:0 0 24px;font-family:'SFMono-Regular',Menlo,monospace;font-size:32px;letter-spacing:10px;font-weight:600;">${code}</p>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#5f6368;">If you didn't just try to sign in, someone has your password. Reset it from the sign-in page.</p>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body>
+</html>
+`;
+
+
+export async function sendLoginCodeEmail(email, code) {
+  // Local development without Resend: print the code instead so sign-in still works.
+  if (!process.env.RESEND_API_KEY && process.env.NODE_ENV !== 'production') {
+    console.log(`[dev] Sign-in code for ${email}: ${code}`);
+    return;
+  }
+  return send({
+    from: `"Portfolio Admin" <${fromEmail}>`,
+    to: [email],
+    subject: `${code} is your sign-in code`,
+    html: getLoginCodeTemplate(code),
+  });
+}

@@ -90,6 +90,10 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "caret-blink": {
+          "0%, 70%, 100%": { opacity: "1" },
+          "20%, 50%": { opacity: "0" },
+        },
         blink: {
           "0%, 50%": { opacity: "1" },
           "50.01%, 100%": { opacity: "0" },
@@ -104,6 +108,7 @@ export default {
         "scale-in": "scale-in 0.4s ease-out",
         shimmer: "shimmer 2s infinite linear",
         blink: "blink 1.1s step-end infinite",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },

@@ -1,7 +1,9 @@
-import crypto from 'crypto';
 import axios from 'axios';
 import { z } from 'zod';
 import { prisma } from './prisma.js';
+import { hashIp } from './request.js';
+
+export { clientIp } from './request.js';
 
 /*
   Layered spam protection for the contact form, cheapest checks first:
@@ -44,16 +46,6 @@ export class ContactRejected extends Error {
     this.silent = silent;
   }
 }
-
-// Salted so the stored value can't be reversed into an IP address.
-const hashIp = (ip) =>
-  crypto
-    .createHash('sha256')
-    .update(`${process.env.JWT_SECRET || 'contact'}:${ip || 'unknown'}`)
-    .digest('hex');
-
-// Vercel sets x-real-ip to the visitor's address and overwrites anything the client sent.
-export const clientIp = (req) => String(req.headers['x-real-ip'] || req.ip || '').trim();
 
 async function verifyRecaptcha(token) {
   const secret = process.env.SITE_SECRET_KEY;

@@ -1,13 +1,27 @@
-import { NavLink, Outlet, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { SESSION_ENDED, getSession } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import Logo from '@/components/Logo';
 import { AdminSidebar } from './AdminSidebar';
 import { adminLinks } from './links';
 
 export const AdminLayout = () => {
-  const token = localStorage.getItem('adminToken');
+  const navigate = useNavigate();
+  const session = getSession();
 
-  if (!token) {
+  // Fired by the API client when the refresh token is rejected (expired, revoked or reused).
+  useEffect(() => {
+    const onEnded = () => {
+      toast.error('Your session ended. Please sign in again.');
+      navigate('/admin/login', { replace: true });
+    };
+    window.addEventListener(SESSION_ENDED, onEnded);
+    return () => window.removeEventListener(SESSION_ENDED, onEnded);
+  }, [navigate]);
+
+  if (!session) {
     return <Navigate to="/admin/login" replace />;
   }
 

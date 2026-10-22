@@ -1,19 +1,29 @@
-import jwt from 'jsonwebtoken';
+import { isSessionActive, verifyAccessToken } from '../lib/auth.js';
 
-export const requireAuth = (req, res, next) => {
+// Accepts a short-lived access token whose session hasn't been signed out or revoked.
+export const requireAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' });
   }
 
-  const token = authHeader.split(' ')[1];
-
+  let payload;
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
-    req.admin = decoded;
-    next();
-  } catch (error) {
+    payload = verifyAccessToken(authHeader.split(' ')[1]);
+  } catch {
     return res.status(401).json({ error: 'Unauthorized: Invalid token' });
   }
+
+  try {
+    if (!(await isSessionActive(payload.sid))) {
+      return res.status(401).json({ error: 'Unauthorized: Session ended' });
+    }
+  } catch (error) {
+    console.error('Session check failed:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+
+  req.admin = payload;
+  next();
 };

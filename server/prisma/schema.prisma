@@ -14,6 +14,54 @@ model Admin {
   resetPasswordExpires DateTime?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
+  sessions             AdminSession[]
+  challenges           LoginChallenge[]
+}
+
+// A signed-in device. The refresh token rotates on every use; presenting the previous
+// one again means it was copied, so the whole session is revoked.
+model AdminSession {
+  id           String    @id @default(cuid())
+  adminId      String
+  admin        Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  tokenHash    String    @unique
+  previousHash String?   @unique
+  remember     Boolean   @default(false)
+  userAgent    String?
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  lastUsedAt   DateTime  @default(now())
+  createdAt    DateTime  @default(now())
+
+  @@index([adminId])
+}
+
+// Second step of sign-in: a 6-digit code emailed after the password checks out.
+model LoginChallenge {
+  id         String    @id @default(cuid())
+  adminId    String
+  admin      Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  codeHash   String
+  attempts   Int       @default(0)
+  sendCount  Int       @default(1)
+  lastSentAt DateTime  @default(now())
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([adminId])
+}
+
+// Failed sign-in attempts and sent codes, counted for lockouts and rate limits.
+model AuthAttempt {
+  id        String   @id @default(cuid())
+  kind      String // password_fail | otp_fail | otp_sent | reset_request
+  email     String?
+  ipHash    String
+  createdAt DateTime @default(now())
+
+  @@index([kind, email, createdAt])
+  @@index([kind, ipHash, createdAt])
 }
 
 // Single-row table holding the homepage intro.
