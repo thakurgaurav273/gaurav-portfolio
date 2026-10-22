@@ -1,0 +1,30 @@
+# Keeps the Neon database awake during the hours people are most likely to visit, so the
+# portfolio doesn't wait on a cold start. Neon suspends compute after 5 idle minutes.
+#
+# Deliberately not 24/7: an always-on 0.25 CU compute uses ~180 CU-hours a month, more than
+# the free plan's 100, which would suspend the database for the rest of the month. This
+# window (weekdays, 03:00–15:59 UTC = 08:30–21:29 IST) uses roughly 70.
+#
+# Setup: in GitHub → Settings → Secrets and variables → Actions → Variables, add
+#   API_URL = https://<your-api>.vercel.app   (the deployed server, no trailing slash)
+name: Keep database warm
+
+on:
+  schedule:
+    - cron: '*/5 3-15 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping the API's database health check
+        env:
+          API_URL: ${{ vars.API_URL }}
+        run: |
+          if [ -z "$API_URL" ]; then
+            echo "::notice::Set the API_URL repository variable to enable the keep-alive."
+            exit 0
+          fi
+          curl --fail --silent --show-error --retry 3 --retry-delay 5 --max-time 30 "$API_URL/api/health/db"

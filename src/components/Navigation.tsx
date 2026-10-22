@@ -1,139 +1,156 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { ArrowLeft, Command, Menu, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useHero } from '@/lib/content';
+import { cn } from '@/lib/utils';
+import Logo from '@/components/Logo';
+import { navLinks, openCommandMenu, scrollToSection, sectionIds, sectionPath } from '@/lib/nav';
+import { lockScroll } from '@/lib/scroll';
 
-interface NavigationProps {
-  isDark: boolean;
-  toggleTheme: () => void;
-}
-
-const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
-];
-
-const Navigation = ({ isDark, toggleTheme }: NavigationProps) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const id = href.replace('#', '');
-    const path = id === 'home' ? '/' : `/${id}`;
-    window.history.pushState({}, '', path);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMobileMenuOpen(false);
-  };
+/*
+  Floating glass nav used on every public page. On the homepage links smooth-scroll
+  to their section; on inner pages they are real links that open the homepage
+  already positioned at that section.
+*/
+const Navigation = ({ back }: { back?: { to: string; label: string } }) => {
+  const hero = useHero();
+  const { pathname } = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
+  const onHome = !back;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    lockScroll(open);
+  }, [open]);
+
+  // Highlight the link for whichever section is in the middle of the viewport.
+  useEffect(() => {
+    if (!onHome) return;
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [onHome, pathname]);
+
+  const go = (e: React.MouseEvent, id: string) => {
+    setOpen(false);
+    if (onHome && scrollToSection(id)) e.preventDefault();
+  };
+
+  const linkTo = (id: string) => ({ to: sectionPath(id), onClick: (e: React.MouseEvent) => go(e, id) });
+
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-card shadow-lg' : ''
-      }`}
-    >
-      <nav className="container-custom py-4">
-        <div className="flex items-center justify-between">
-
-          <motion.a
-            href="#home"
-            onClick={(e) => handleScrollTo(e, '#home')}
-            className="flex items-center"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <img 
-              src={isDark ? "/logo.png" : "/logo_dark.png"} 
-              alt="Gaurav Singh Logo" 
-              className="h-10 w-auto"
-            />
-          </motion.a>
-
-
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={(e) => handleScrollTo(e, link.href)}
-                className="nav-link font-medium"
+    <header className="fixed inset-x-0 top-3 z-50 sm:top-4">
+      <div className="container-custom">
+        <nav
+          className={cn(
+            'flex h-14 items-center justify-between rounded-full border pl-4 pr-2 transition-all duration-500',
+            scrolled || open || !onHome
+              ? 'border-border bg-background/80 shadow-[0_8px_24px_-16px_rgba(20,22,26,0.25)] backdrop-blur-xl'
+              : 'border-transparent bg-transparent',
+          )}
+        >
+          <div className="flex items-center gap-2">
+            <Link {...linkTo('home')} className="group flex items-center gap-2.5 text-[15px] font-medium">
+              <Logo className="h-8 w-auto transition-transform duration-300 group-hover:scale-105" />
+              <span className="hidden sm:inline">{hero.name}</span>
+            </Link>
+            {back && (
+              <Link
+                to={back.to}
+                className="ml-1 inline-flex h-8 items-center gap-1 rounded-full px-3 font-mono text-[12px] text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
+                <ArrowLeft className="h-3.5 w-3.5" /> {back.label}
+              </Link>
+            )}
+          </div>
+
+          <div className="hidden items-center md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.id}
+                {...linkTo(link.id)}
+                className={cn(
+                  'relative isolate rounded-full px-4 py-2 text-sm transition-colors',
+                  active === link.id && onHome ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                {active === link.id && onHome && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 -z-10 rounded-full bg-secondary"
+                    transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                  />
+                )}
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
-
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="rounded-full"
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={openCommandMenu}
+              className="hidden h-9 items-center gap-2 rounded-full border border-border bg-card pl-3 pr-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+              aria-label="Open command menu"
             >
-              {isDark ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden rounded-full"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              <Command className="h-3.5 w-3.5" />
+              <span className="kbd">K</span>
+            </button>
+            <Link {...linkTo('contact')}
+              className="hidden h-9 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-foreground/85 sm:inline-flex"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </Button>
+              Let's talk
+            </Link>
+            <button
+              className="rounded-full p-2.5 md:hidden"
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
-        </div>
+        </nav>
 
-
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden mt-4 pb-4"
-          >
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="nav-link font-medium py-2"
-                  onClick={(e) => handleScrollTo(e, link.href)}
-                >
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="mt-2 rounded-3xl border border-border bg-background/95 p-3 shadow-[0_20px_40px_-24px_rgba(20,22,26,0.35)] backdrop-blur-xl md:hidden"
+            >
+              {navLinks.map((link, i) => (
+                <Link key={link.id} {...linkTo(link.id)} className="flex items-baseline gap-3 rounded-xl px-4 py-2.5 text-lg font-medium">
+                  <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
                   {link.label}
-                </a>
+                </Link>
               ))}
-            </div>
-          </motion.div>
-        )}
-      </nav>
-    </motion.header>
+              {hero.resumeUrl && (
+                <a href={hero.resumeUrl} target="_blank" rel="noopener noreferrer" className="block rounded-xl px-4 py-2.5 text-lg font-medium">
+                  Resume ↗
+                </a>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
   );
 };
 

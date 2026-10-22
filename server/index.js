@@ -1,12 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import axios from 'axios';
-import mongoose from 'mongoose';
 import { sendContactEmail, sendConfirmationEmail } from './emailService.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import contentRoutes from './routes/contentRoutes.js';
+import { prisma } from './lib/prisma.js';
+import { ContactRejected, clientIp, markSubmission, pruneSubmissions, recordSubmission, screenContact } from './lib/contactGuard.js';
 import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config();
@@ -18,134 +18,72 @@ cloudinary.config({
 });
 
 const app = express();
+// Behind Vercel's proxy; needed so req.ip is the visitor, not the proxy.
+app.set('trust proxy', true);
 const PORT = process.env.PORT || 3001;
 
 
 app.use(cors());
 app.use(express.json());
 
-let cached = global.mongoose;
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-async function connectDb() {
-  if (cached.conn) {
-    return cached.conn;
-  }
-  if (!cached.promise) {
-    mongoose.set('strictQuery', true);
-    cached.promise = mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio', {
-      bufferCommands: false,
-    }).then((mongoose) => {
-      console.log('✅ Connected to MongoDB');
-      return mongoose;
-    }).catch((error) => {
-      console.error('❌ MongoDB connection error:', error);
-      throw error;
-    });
-  }
-  cached.conn = await cached.promise;
-  return cached.conn;
-}
-
-app.use(async (req, res, next) => {
-  if (req.path === '/health') return next();
-  try {
-    await connectDb();
-    next();
-  } catch (error) {
-    res.status(500).json({ error: 'Database connection failed' });
-  }
-});
-
 app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/upload', uploadRoutes);
 
 
-async function verifyRecaptcha(token) {
-  const secretKey = process.env.SITE_SECRET_KEY;
-  
-  if (!secretKey) {
-    console.warn('SITE_SECRET_KEY not configured, skipping reCAPTCHA verification');
-    return true;
-  }
-
-  if (!token) {
-    return false;
-  }
-
-  try {
-    const response = await axios.post(
-      'https://www.google.com/recaptcha/api/siteverify',
-      null,
-      {
-        params: {
-          secret: secretKey,
-          response: token,
-        },
-      }
-    );
-
-    return response.data.success === true && response.data.score >= 0.5;
-  } catch (error) {
-    console.error('reCAPTCHA verification error:', error);
-    return false;
-  }
-}
-
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
 
-app.post('/api/contact', async (req, res) => {
+// Touches the database so Neon's compute stays awake; pinged on a schedule by .github/workflows/keep-db-warm.yml.
+app.get('/api/health/db', async (req, res) => {
+  const started = Date.now();
   try {
-    const { name, email, message, recaptchaToken } = req.body;
+    await prisma.$queryRaw`SELECT 1`;
+    res.set('Cache-Control', 'no-store').json({ status: 'ok', ms: Date.now() - started });
+  } catch (error) {
+    console.error('Database health check failed:', error);
+    res.status(503).json({ status: 'error' });
+  }
+});
 
-    if (!name || !email || !message) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields: name, email, message',
-      });
+app.post('/api/contact', async (req, res) => {
+  let submission;
+  try {
+    submission = await screenContact(req.body, clientIp(req));
+  } catch (error) {
+    if (!(error instanceof ContactRejected)) {
+      console.error('Contact screening error:', error);
+      return res.status(500).json({ success: false, error: 'Something went wrong. Please try again later.' });
     }
+    // Bots tripping the honeypot or time trap get a normal-looking success.
+    if (error.silent) return res.json({ success: true, message: 'Email sent successfully' });
+    return res.status(error.status).json({ success: false, error: error.message });
+  }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid email format',
-      });
-    }
+  const { sendConfirmation, ...data } = submission;
+  const record = await recordSubmission(data);
+  pruneSubmissions().catch(() => {});
 
-    const secretKey = process.env.SITE_SECRET_KEY;
-    if (secretKey) {
-      const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
-      if (!isRecaptchaValid) {
-        return res.status(400).json({
-          success: false,
-          error: 'reCAPTCHA verification failed. Please try again.',
-        });
-      }
-    } else {
-      console.warn('reCAPTCHA verification skipped - SITE_SECRET_KEY not configured');
-    }
-
-    await sendContactEmail({ name, email, message });
-
-    await sendConfirmationEmail({ name, email });
-
-    res.json({
-      success: true,
-      message: 'Email sent successfully',
-    });
+  try {
+    await sendContactEmail(data);
+    await markSubmission(record.id, { emailSent: true });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to send email. Please try again later.',
-    });
+    return res.status(500).json({ success: false, error: 'Failed to send email. Please try again later.' });
   }
+
+  if (sendConfirmation) {
+    try {
+      await sendConfirmationEmail(data);
+      await markSubmission(record.id, { confirmationSent: true });
+    } catch (error) {
+      // The owner already has the message; a failed courtesy email shouldn't fail the request.
+      console.error('Error sending confirmation email:', error);
+    }
+  }
+
+  res.json({ success: true, message: 'Email sent successfully' });
 });
 
 if (process.env.NODE_ENV !== 'production') {
