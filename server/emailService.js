@@ -196,17 +196,36 @@ export async function sendConfirmationEmail({ name, email }) {
 }
 
 
+const getPasswordResetTemplate = (resetLink) => `
+<!DOCTYPE html>
+<html lang="en">
+<body style="margin:0;padding:32px 16px;background:#f5f4f1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#14161a;">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+    <table width="440" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #e4e2dd;border-radius:12px;">
+      <tr><td style="padding:32px;">
+        <p style="margin:0 0 8px;font-size:13px;color:#5f6368;">Portfolio admin</p>
+        <h1 style="margin:0 0 16px;font-size:20px;">Reset your password</h1>
+        <p style="margin:0 0 24px;font-size:15px;line-height:1.5;color:#3c4043;">Someone asked to reset the admin password. The link works once and expires in 1 hour.</p>
+        <a href="${resetLink}" style="display:inline-block;background:#14161a;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;">Choose a new password</a>
+        <p style="margin:24px 0 0;font-size:13px;line-height:1.5;color:#5f6368;">If this wasn't you, ignore this email; your password stays the same.</p>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body>
+</html>
+`;
+
 export async function sendPasswordResetEmail(email, resetLink) {
+  // Local development without Resend: print the link instead.
+  if (!process.env.RESEND_API_KEY && process.env.NODE_ENV !== 'production') {
+    console.log(`[dev] Password reset link for ${email}: ${resetLink}`);
+    return;
+  }
   return send({
     from: `"Portfolio Admin" <${fromEmail}>`,
     to: [email],
-    subject: 'Password Reset Request',
-    html: `
-      <h2>Password Reset Request</h2>
-      <p>We received a request to reset your password. Click the link below to set a new password:</p>
-      <a href="${resetLink}">Reset Password</a>
-      <p>If you didn't request this, you can safely ignore this email.</p>
-    `,
+    subject: 'Reset your portfolio admin password',
+    html: getPasswordResetTemplate(resetLink),
   });
 }
 
