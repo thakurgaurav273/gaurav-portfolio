@@ -190,7 +190,9 @@ router.post('/forgot-password', async (req, res) => {
       },
     });
 
-    const siteUrl = process.env.SITE_URL || 'http://localhost:8080';
+    // Never build the link from request headers: a forged Host would point the email at another site.
+    const siteUrl = process.env.SITE_URL || (process.env.NODE_ENV === 'production' ? null : 'http://localhost:8080');
+    if (!siteUrl) throw new Error('SITE_URL is not configured');
     const resetLink = `${siteUrl}/admin/reset-password/${resetToken}?email=${encodeURIComponent(email)}`;
     await sendPasswordResetEmail(email, resetLink);
 
@@ -208,6 +210,9 @@ router.post('/reset-password', async (req, res) => {
 
     if (!token || !email || !password) {
       return res.status(400).json({ error: 'Invalid or expired reset token' });
+    }
+    if (String(password).length < 12) {
+      return res.status(400).json({ error: 'Use at least 12 characters.' });
     }
 
     const admin = await prisma.admin.findFirst({
