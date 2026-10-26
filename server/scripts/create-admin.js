@@ -4,7 +4,9 @@
 import bcrypt from 'bcrypt';
 import { prisma } from '../lib/prisma.js';
 
-const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+const { ADMIN_PASSWORD } = process.env;
+// Sign-in and password reset look emails up in lowercase, so store them that way.
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL?.trim().toLowerCase();
 
 if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
   console.error('Set ADMIN_EMAIL and ADMIN_PASSWORD.');
