@@ -4,7 +4,8 @@ import { cn } from '@/lib/utils';
 import Panel from '@/components/Panel';
 import { optimizeImage, projectCover, projectUrl, type Project } from '@/lib/content';
 
-// Screenshot presented in a minimal browser window. Neutral placeholder when there is no image.
+// Screenshot presented in a minimal browser window, always shown whole at its own proportions
+// (screenshots vary from about 1.8:1 to 2.2:1). Neutral placeholder when there is no image.
 export const BrowserFrame = ({
   src,
   alt,
@@ -34,10 +35,10 @@ export const BrowserFrame = ({
           alt={alt}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
-          className="aspect-[16/10] w-full object-cover object-top transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+          className="block h-auto w-full"
         />
       ) : (
-        <div className="flex aspect-[16/10] w-full items-center justify-center text-xl font-semibold tracking-tight text-muted-foreground">
+        <div className="flex aspect-[2/1] w-full items-center justify-center text-xl font-semibold tracking-tight text-muted-foreground">
           {alt}
         </div>
       )}
