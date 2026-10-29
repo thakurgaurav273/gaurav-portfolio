@@ -23,8 +23,7 @@ export default function AllProjects() {
       <PageHeader back={{ to: '/', label: 'Home' }} />
       <main className="container-custom pb-24">
         <Reveal className="max-w-3xl pt-10 md:pt-16">
-          <p className="eyebrow flex items-center gap-3 text-foreground">
-            <span className="h-px w-8 bg-foreground/50" />
+          <p className="eyebrow">
             Archive
           </p>
           <h1 className="display mt-4 text-[32px] md:text-[44px]">

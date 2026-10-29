@@ -101,7 +101,7 @@ export default function ManageExperience() {
     const opts: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short' };
     const s = new Date(start).toLocaleDateString('en-US', opts);
     const e = isCurrent ? 'Present' : (end ? new Date(end).toLocaleDateString('en-US', opts) : '');
-    return `${s} – ${e}`;
+    return `${s} to ${e}`;
   };
 
   return (

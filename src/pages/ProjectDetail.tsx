@@ -3,57 +3,23 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Github, Lock } from 'lucide-react';
 import { Reveal } from '@/components/Section';
 import PageHeader from '@/components/PageHeader';
-import { BrowserFrame } from '@/components/ProjectCard';
+import { ScreenshotCarousel, Shot } from '@/components/Screenshots';
 import Footer from '@/components/Footer';
-import { cn } from '@/lib/utils';
-import { optimizeImage, projectGallery, projectUrl, useProject, useProjects, type Screenshot } from '@/lib/content';
+import { projectGallery, projectUrl, useProject, useProjects } from '@/lib/content';
 
 const Block = ({ label, children }: { label: string; children: ReactNode }) => (
   <Reveal className="rail border-t border-border py-10">
     <h2 className="rail-label eyebrow text-foreground md:pt-1.5">{label}</h2>
-    <div className="rail-body">{children}</div>
+    <div className="rail-body min-w-0">{children}</div>
   </Reveal>
 );
-
-const Shot = ({ shot, title, priority = false }: { shot: Screenshot; title: string; priority?: boolean }) => {
-  const mobile = shot.orientation === 'mobile';
-  return (
-    <figure className={cn(mobile && 'mx-auto w-full max-w-[280px]')}>
-      {mobile ? (
-        <div className="frame rounded-[2rem] p-2">
-          <img
-            src={optimizeImage(shot.url, 600)}
-            alt={shot.alt || shot.label || ''}
-            loading={priority ? 'eager' : 'lazy'}
-            decoding="async"
-            className="aspect-[9/19] w-full rounded-[1.5rem] bg-muted object-cover object-top"
-          />
-        </div>
-      ) : (
-        <BrowserFrame
-          src={shot.url}
-          alt={shot.alt || shot.label || title}
-          label={shot.label ? `${title} / ${shot.label}` : title}
-          width={1800}
-          priority={priority}
-        />
-      )}
-      {(shot.label || shot.caption) && (
-        <figcaption className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          {shot.label && <span className="font-medium text-foreground">{shot.label}. </span>}
-          {shot.caption}
-        </figcaption>
-      )}
-    </figure>
-  );
-};
 
 const Skeleton = () => (
   <div className="container-custom animate-pulse pt-20">
     <div className="h-3 w-32 rounded bg-muted" />
     <div className="mt-6 h-10 w-2/3 rounded bg-muted" />
     <div className="mt-4 h-5 w-1/2 rounded bg-muted" />
-    <div className="mt-14 aspect-[16/10] w-full rounded-xl bg-muted" />
+    <div className="mt-14 aspect-[2/1] w-full rounded-xl bg-muted" />
   </div>
 );
 
@@ -111,8 +77,7 @@ export default function ProjectDetail() {
 
       <main className="container-custom pb-24">
         <Reveal className="pt-10 md:pt-16">
-          <p className="eyebrow flex items-center gap-3 text-foreground">
-            <span className="h-px w-8 bg-foreground/50" />
+          <p className="eyebrow">
             {[project.category, project.status === 'in-progress' ? 'In progress' : null].filter(Boolean).join(' · ') || 'Case study'}
           </p>
           <h1 className="display mt-4 text-[32px] md:text-[44px]">{project.title}</h1>
@@ -174,7 +139,7 @@ export default function ProjectDetail() {
               <ul className="max-w-2xl space-y-4">
                 {project.architecture.map((note, i) => (
                   <li key={i} className="relative pl-5 leading-relaxed text-muted-foreground">
-                    <span className="absolute left-0 top-[0.75em] h-px w-2.5 bg-foreground/30" aria-hidden />
+                    <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 rounded-full bg-foreground/25" aria-hidden />
                     {note}
                   </li>
                 ))}
@@ -197,16 +162,16 @@ export default function ProjectDetail() {
 
           {rest.length > 0 && (
             <Block label="Screens">
-              <div
-                className={cn(
-                  'grid gap-12',
-                  rest.every((s) => s.orientation === 'mobile') && 'sm:grid-cols-2 lg:grid-cols-3 gap-8',
-                )}
-              >
-                {rest.map((shot) => (
-                  <Shot key={shot.url} shot={shot} title={project.title} />
-                ))}
-              </div>
+              {rest.every((s) => s.orientation === 'mobile') && rest.length > 1 ? (
+                // Phone screenshots are narrow enough to sit side by side.
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {rest.map((shot) => (
+                    <Shot key={shot.url} shot={shot} title={project.title} />
+                  ))}
+                </div>
+              ) : (
+                <ScreenshotCarousel shots={rest} title={project.title} />
+              )}
             </Block>
           )}
 

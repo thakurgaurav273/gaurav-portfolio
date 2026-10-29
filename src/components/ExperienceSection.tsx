@@ -55,9 +55,7 @@ const ExperienceSection = () => {
                           <ul className="mt-3 space-y-2">
                             {role.description.map((item, j) => (
                               <li key={j} className="relative pl-5 text-[15px] leading-relaxed text-muted-foreground">
-                                <span className="absolute left-0 top-0 font-mono text-muted-foreground/60" aria-hidden>
-                                  ›
-                                </span>
+                                <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 rounded-full bg-foreground/25" aria-hidden />
                                 {item}
                               </li>
                             ))}
